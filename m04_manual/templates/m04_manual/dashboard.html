@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}M04 - Manual SGC | AuditReady Labs{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+        <h2 class="text-white"><i class="fas fa-book text-accent me-2"></i>M04 — Manual de Calidad y Procesos</h2>
+        <div>
+            {% if manual_actual %}
+                <span class="badge bg-{% if manual_actual.estado == 'APROBADO' %}success{% elif manual_actual.estado == 'BORRADOR' %}warning text-dark{% else %}danger{% endif %} fs-6">
+                    {{ manual_actual.estado }}
+                </span>
+                <a href="{% url 'm04_manual:exportar_pdf' manual_actual.id %}" class="btn btn-outline-info ms-2">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} bg-dark text-white border-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-white">Editor del Documento</h5>
+                    {% if manual_actual.estado == 'APROBADO' %}
+                        <form method="post" action="{% url 'm04_manual:nueva_revision' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-primary-custom">
+                                <i class="fas fa-plus"></i> Nueva Revisión (Borrador)
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'm04_manual:dashboard' %}">
+                        {% csrf_token %}
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="text-muted">Código:</label>
+                                {{ form.doc_code }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted">Título:</label>
+                                {{ form.doc_title }}
+                            </div>
+                            <div class="col-md-2">
+                                <label class="text-muted">Versión:</label>
+                                {{ form.version }}
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="text-muted">Fecha Vigencia:</label>
+                                {{ form.fecha_vigencia }}
+                            </div>
+                            <div class="col-md-8">
+                                <label class="text-muted">Resumen de Cambios (Obligatorio):</label>
+                                {{ form.cambio_resumen }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-muted">Contenido del Manual:</label>
+                            {{ form.contenido }}
+                        </div>
+
+                        {% if not manual_actual or manual_actual.estado == 'BORRADOR' %}
+                            <button type="submit" class="btn btn-primary-custom w-100">
+                                <i class="fas fa-save"></i> Guardar Versión (BORRADOR)
+                            </button>
+                        {% else %}
+                            <div class="alert alert-secondary bg-transparent border-secondary text-muted">
+                                <i class="fas fa-lock"></i> Este documento está Aprobado. Debes crear una nueva revisión para editarlo.
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+                {% if manual_actual and manual_actual.estado == 'BORRADOR' %}
+                    <div class="card-footer border-secondary text-end">
+                        <form method="post" action="{% url 'm04_manual:aprobar_manual' manual_actual.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success" onclick="return confirm('¿Aprobar y aplicar control documental?')">
+                                <i class="fas fa-check-double"></i> Aprobar Documento
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary"><h6 class="mb-0 text-white">Historial de Versiones</h6></div>
+                <div class="card-body p-0" style="max-height: 250px; overflow-y: auto;">
+                    <ul class="list-group list-group-flush">
+                        {% for hist in manuales %}
+                            <li class="list-group-item bg-transparent text-white border-secondary">
+                                <div class="d-flex justify-content-between">
+                                    <strong>v{{ hist.version }}</strong>
+                                    <span class="badge bg-{% if hist.estado == 'APROBADO' %}success{% else %}warning text-dark{% endif %}">
+                                        {{ hist.estado }}
+                                    </span>
+                                </div>
+                                <small class="text-muted">{{ hist.fecha_vigencia }} | Por: {{ hist.elaborado_por }}</small>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item bg-transparent text-muted text-center border-secondary">No hay versiones.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            {% if manual_actual %}
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary"><h6 class="mb-0 text-white">Distribución (ISO)</h6></div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'm04_manual:agregar_distribucion' manual_actual.id %}">
+                        {% csrf_token %}
+                        <div class="mb-2">{{ dist_form.recipient_name }} <small class="text-muted">Nombre/Destinatario</small></div>
+                        <div class="mb-2">{{ dist_form.copy_type }} <small class="text-muted">Tipo Copia</small></div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">{{ dist_form.area }} <small class="text-muted">Área</small></div>
+                            <div class="col-6">{{ dist_form.delivery_method }} <small class="text-muted">Método Entrega</small></div>
+                        </div>
+
+                        <div class="mb-2 d-flex gap-2">
+                            <div class="w-50">{{ dist_form.delivered_on }} <small class="text-muted">Entrega</small></div>
+                            <div class="w-50">{{ dist_form.ack_on }} <small class="text-muted">Acuse (Fecha)</small></div>
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ dist_form.ack_received }}
+                            <label class="form-check-label text-muted">Acuse Recibido</label>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-outline-info w-100">Agregar Distribución</button>
+                    </form>
+
+                    <hr class="border-secondary">
+                    <ul class="list-group list-group-flush" style="font-size: 0.85rem;">
+                        {% for dist in manual_actual.distribuciones.all|slice:":10" %}
+                            <li class="list-group-item bg-transparent text-white border-secondary px-0">
+                                <strong>{{ dist.recipient_name }}</strong> <br>
+                                <span class="text-muted">{{ dist.copy_type }} | Entregado: {{ dist.delivered_on|default:"N/A" }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

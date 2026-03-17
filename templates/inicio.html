@@ -1,0 +1,543 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio — LABCOR SGC{% endblock %}
+
+{% block content %}
+<style>
+    /* Estilos específicos para las tarjetas */
+    .module-card {
+        display: block;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+        text-decoration: none;
+        background-color: white;
+        transition: transform 0.2s, box-shadow 0.2s;
+        height: 100%;
+    }
+    .module-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        text-decoration: none;
+    }
+    .module-card-top {
+        height: 6px;
+        width: 100%;
+    }
+    .module-card-body {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 6px);
+    }
+    .badge-code {
+        color: white;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 4px;
+    }
+    .module-title {
+        font-weight: bold;
+        font-size: 14px;
+        color: #2c3e50;
+        margin-top: 14px;
+        margin-bottom: 14px;
+        line-height: 1.3;
+        flex-grow: 1;
+    }
+    .btn-open {
+        font-size: 12px;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        display: inline-block;
+        font-weight: 500;
+        transition: opacity 0.2s;
+        text-align: center;
+    }
+    .module-card:hover .btn-open {
+        opacity: 0.8;
+    }
+
+    /* Layout Flexbox */
+    .dashboard-layout {
+        display: flex;
+        gap: 25px;
+        align-items: flex-start;
+    }
+
+    /* Estilos de la barra lateral de categorías */
+    .sidebar-cats {
+        width: 280px;
+        flex-shrink: 0;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .cat-btn {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        background: transparent;
+        font-weight: 600;
+        color: #495057;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .cat-btn:hover { background: #f8f9fa; border-color: #e9ecef; }
+    .cat-btn.active {
+        background: #0d6efd;
+        color: #ffffff;
+        border-color: #0d6efd;
+        box-shadow: 0 2px 4px rgba(13, 110, 253, 0.3);
+    }
+
+    /* Panel donde se muestran los módulos */
+    .modules-panel {
+        flex-grow: 1;
+    }
+
+    .cat-group { display: none; animation: fadeIn 0.3s ease-in-out; }
+    .cat-group.active { display: block; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="container-fluid p-0 mb-5">
+
+    <div class="d-flex align-items-center mb-4">
+        <h3 class="fw-bold m-0" style="color: #2c3e50;">
+            <i class="fas fa-home me-2"></i> Panel Principal
+        </h3>
+        <span class="ms-3 text-muted">Accesos Rápidos por Categoría</span>
+    </div>
+
+    <div class="dashboard-layout mb-5">
+
+        <div class="sidebar-cats">
+            <button class="cat-btn active" onclick="mostrarCategoria(event, 'cat-a')">
+                <i class="fas fa-award me-2"></i> A. Sistema de Calidad
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-b')">
+                <i class="fas fa-folder-open me-2"></i> B. Documentos y Registros
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-c')">
+                <i class="fas fa-exclamation-triangle me-2"></i> C. Gestión de Riesgos
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-d')">
+                <i class="fas fa-flask me-2"></i> D. Operaciones Laboratorio
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-e')">
+                <i class="fas fa-microscope me-2"></i> E. Equipos e Infraestructura
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-f')">
+                <i class="fas fa-users me-2"></i> F. Personal y Competencia
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-g')">
+                <i class="fas fa-handshake me-2"></i> G. Comercial y Clientes
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-h')">
+                <i class="fas fa-chart-bar me-2"></i> H. Reportes e Indicadores
+            </button>
+            <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-i')">
+                <i class="fas fa-lock me-2"></i> I. Seguridad y Sistema
+            </button>
+        </div>
+
+        <div class="modules-panel">
+
+            <div id="cat-a" class="cat-group active">
+                <h4 class="mb-4" style="color: #2c3e50;">A. Sistema de Calidad</h4>
+                <div class="row g-4">
+                    {% for m in "012345678" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="{% if m == '1' %}{% url 'm00_imparcialidad:dashboard' %}{% elif m == '2' %}{% url 'm04_manual:dashboard' %}{% else %}#{% endif %}" class="module-card">
+                            <div class="module-card-top" style="background-color: #0d6efd;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0d6efd;">A0{{ m }}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "0" %} Auditoría Automática
+                                    {% elif m == "1" %} Imparcialidad y Confidencialidad
+                                    {% elif m == "2" %} SGC Manual de Procesos
+                                    {% elif m == "3" %} Mapa Procesos Interactivo
+                                    {% elif m == "4" %} Mapa Procesos ISO 17025
+                                    {% elif m == "5" %} Liderazgo ISO 17025
+                                    {% elif m == "6" %} Inducción ISO 17025
+                                    {% elif m == "7" %} Diagrama de Tortuga
+                                    {% elif m == "8" %} Consulta y Distribución Doc.
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #0d6efd;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-b" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">B. Documentos y Registros</h4>
+                <div class="row g-4">
+                    {% for m in "1234567" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="{% if m == '1' %}{% url 'm05_control_documental:dashboard' %}{% elif m == '2' %}{% url 'm02_documentos:lista' %}{% else %}#{% endif %}" class="module-card">
+                            <div class="module-card-top" style="background-color: #198754;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #198754;">B0{{ m }}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "1" %} Control Documental
+                                    {% elif m == "2" %} Documentos Controlados
+                                    {% elif m == "3" %} Machote ISO (Word/PDF)
+                                    {% elif m == "4" %} Editor Diagramas Flujo
+                                    {% elif m == "5" %} Control Registros
+                                    {% elif m == "6" %} Firmas y Consentimiento
+                                    {% elif m == "7" %} Integridad de Datos
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #198754;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-c" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">C. Gestión de Riesgos</h4>
+                <div class="row g-4">
+                    {% for m in "1234567890" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="{% if m == '1' %}{% url 'm06_riesgos_oportunidades:m06_dashboard' %}{% elif m == '4' %}{% url 'm07_dashboard' %}{% else %}#{% endif %}" class="module-card">
+                            <div class="module-card-top" style="background-color: #dc3545;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #dc3545;">{% if m == "0" %}C10{% else %}C0{{ m }}{% endif %}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "1" %} Riesgos y Oportunidades
+                                    {% elif m == "2" %} Matriz de Riesgos
+                                    {% elif m == "3" %} Gestión de Amenazas
+                                    {% elif m == "4" %} Acciones Correctivas
+                                    {% elif m == "5" %} Gestión de Quejas
+                                    {% elif m == "6" %} Trabajo No Conforme
+                                    {% elif m == "7" %} Auditorías Internas
+                                    {% elif m == "8" %} Revisión por la Dirección
+                                    {% elif m == "9" %} ISO 17025 Matriz Riesgos
+                                    {% elif m == "0" %} ISO 17025 Riesgos DB
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #dc3545;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-d" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">D. Operaciones de Laboratorio</h4>
+                <div class="row g-4">
+                    {% for m in "123456789ABCDEF" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #6f42c1;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #6f42c1;">
+                                        {% if m == "A" %}D10{% elif m == "B" %}D11{% elif m == "C" %}D12{% elif m == "D" %}D13{% elif m == "E" %}D14{% elif m == "F" %}D15{% elif m == "G" %}D16{% else %}D0{{ m }}{% endif %}
+                                    </span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "1" %} Bitácora ASTM B117 (Salina)
+                                    {% elif m == "2" %} Cámara Salina ISO 9227
+                                    {% elif m == "3" %} Bitácora Tensión ASTM E8
+                                    {% elif m == "4" %} Dureza Rockwell ASTM E18
+                                    {% elif m == "5" %} Bitácora pH Extech
+                                    {% elif m == "6" %} pH Controlador
+                                    {% elif m == "7" %} Registro de Muestras
+                                    {% elif m == "8" %} Custodia de Muestras
+                                    {% elif m == "9" %} Métodos Valid. y Verif.
+                                    {% elif m == "A" %} Aseguramiento de Resultados
+                                    {% elif m == "B" %} Incertidumbre Medición
+                                    {% elif m == "C" %} Reactivos y Soluciones
+                                    {% elif m == "D" %} Condiciones Ambientales
+                                    {% elif m == "E" %} Corrosión e Integridad
+                                    {% elif m == "F" %} ASTM C876, NACE, AMPP
+                                    {% elif m == "G" %} Medición de pH
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #6f42c1;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-e" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">E. Equipos e Infraestructura</h4>
+                <div class="row g-4">
+                    {% for m in "123456" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="{% if m == '6' %}{% url 'm01_dashboard' %}{% else %}#{% endif %}" class="module-card">
+                            <div class="module-card-top" style="background-color: #0dcaf0;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0dcaf0;">E0{{ m }}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "1" %} Equipos, Inventario, Mto.
+                                    {% elif m == "2" %} Impacto Equipo Fuera Servicio
+                                    {% elif m == "3" %} Visor DTL Cámara Salina
+                                    {% elif m == "4" %} Visor DTL Genérico
+                                    {% elif m == "5" %} Admin. Activos Internos
+                                    {% elif m == "6" %} Limpieza de Laboratorio
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #0dcaf0;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-f" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">F. Personal y Competencia</h4>
+                <div class="row g-4">
+                    {% for m in "12345" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #d63384;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #d63384;">F0{{ m }}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "1" %} Competencia y Formación
+                                    {% elif m == "2" %} Usuarios y Permisos
+                                    {% elif m == "3" %} Control Ingreso Laboratorio
+                                    {% elif m == "4" %} Códigos de Barras
+                                    {% elif m == "5" %} Generador QR
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #d63384;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-g" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">G. Comercial y Clientes</h4>
+                <div class="row g-4">
+                    {% for m in "123456" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="{% if m == '1' %}{% url 'm03_dashboard' %}{% else %}#{% endif %}" class="module-card">
+                            <div class="module-card-top" style="background-color: #ffc107;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #ffc107; color: #000;">G0{{ m }}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "1" %} Revisión de Contrato
+                                    {% elif m == "2" %} Enfoque al Cliente
+                                    {% elif m == "3" %} Cotizador Corrosión
+                                    {% elif m == "4" %} Proveedores y Compras
+                                    {% elif m == "5" %} Acuerdo Servicios Técnicos
+                                    {% elif m == "6" %} Orden de Compra
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #ffc107; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-h" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">H. Reportes e Indicadores</h4>
+                <div class="row g-4">
+                    {% for m in "123456" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #20c997;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #20c997;">H0{{ m }}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "1" %} Informes ISO
+                                    {% elif m == "2" %} KPIs ISO 17025
+                                    {% elif m == "3" %} Reporte XRF
+                                    {% elif m == "4" %} Reporte Cámara Salina
+                                    {% elif m == "5" %} Bitácora Tensión ASTM E8
+                                    {% elif m == "6" %} Gantt ISO 17025
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #20c997;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cat-i" class="cat-group">
+                <h4 class="mb-4" style="color: #2c3e50;">I. Seguridad y Sistema</h4>
+                <div class="row g-4">
+                    {% for m in "0123456" %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #212529;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #212529;">I0{{ m }}</span>
+                                </div>
+                                <div class="module-title">
+                                    {% if m == "0" %} Auditoría Automática
+                                    {% elif m == "1" %} Audit View
+                                    {% elif m == "2" %} Movimientos Usuarios
+                                    {% elif m == "3" %} Usuarios Administradores
+                                    {% elif m == "4" %} Backups y Restore
+                                    {% elif m == "5" %} Control Cambios SW
+                                    {% elif m == "6" %} Estado BD y Reconectar
+                                    {% endif %}
+                                </div>
+                                <span class="btn-open" style="background-color: #212529;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        <h5 class="fw-bold mb-3" style="color: #2c3e50;">Actividad Reciente (Audit Log)</h5>
+        <div class="table-responsive bg-white border" style="border-radius: 8px;">
+            <table class="table table-hover mb-0 align-middle">
+                <thead style="background-color: #f8f9fa;">
+                    <tr>
+                        <th class="ps-4 text-secondary">Usuario</th>
+                        <th class="text-secondary">Módulo</th>
+                        <th class="text-secondary">Acción</th>
+                        <th class="text-secondary">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-4 fw-bold" style="color: #2c3e50;">admin</td>
+                        <td><span class="badge" style="background-color: #6f42c1;">D07</span></td>
+                        <td style="color: #34495e;">Alta de muestra COR-2026-001</td>
+                        <td class="text-muted small">Hace 10 min</td>
+                    </tr>
+                    <tr>
+                        <td class="ps-4 fw-bold" style="color: #2c3e50;">invitado</td>
+                        <td><span class="badge" style="background-color: #d63384;">F03</span></td>
+                        <td style="color: #34495e;">Ingreso detectado al laboratorio</td>
+                        <td class="text-muted small">Hace 35 min</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // -----------------------------------------------------------
+    // FUNCION PARA INTERCAMBIAR ENTRE CATEGORIAS
+    // -----------------------------------------------------------
+    function mostrarCategoria(evento, idCategoria) {
+        // 1. Quitar la clase 'active' de todos los botones
+        let botones = document.querySelectorAll('.cat-btn');
+        botones.forEach(btn => btn.classList.remove('active'));
+
+        // 2. Ocultar todos los grupos de módulos
+        let grupos = document.querySelectorAll('.cat-group');
+        grupos.forEach(grupo => grupo.classList.remove('active'));
+
+        // 3. Mostrar el grupo seleccionado
+        document.getElementById(idCategoria).classList.add('active');
+
+        // 4. Activar el botón correspondiente (incluso si fue llamado por la limpieza de búsqueda)
+        if(evento) {
+            evento.currentTarget.classList.add('active');
+        } else {
+            let btn = Array.from(botones).find(b => b.getAttribute('onclick').includes(idCategoria));
+            if(btn) btn.classList.add('active');
+        }
+    }
+
+    // -----------------------------------------------------------
+    // FUNCIONALIDAD DE LA BARRA DE BÚSQUEDA
+    // -----------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                // Obtenemos lo que escribió el usuario y lo pasamos a minúsculas
+                const term = e.target.value.toLowerCase().trim();
+
+                // Obtenemos todas las tarjetas y las categorías
+                const allModulesContainers = document.querySelectorAll('.module-container');
+                const catGroups = document.querySelectorAll('.cat-group');
+
+                if (term === '') {
+                    // Si no hay nada escrito, restauramos la vista normal
+                    allModulesContainers.forEach(container => container.style.display = 'block');
+
+                    // Volvemos a la pestaña que estaba seleccionada o la "A" por defecto
+                    const activeBtn = document.querySelector('.cat-btn.active');
+                    if (activeBtn) {
+                        activeBtn.click();
+                    } else {
+                        mostrarCategoria(null, 'cat-a');
+                    }
+                } else {
+                    // Modo Búsqueda: Mostramos todos los grupos para poder buscar en todos lados a la vez
+                    catGroups.forEach(group => group.classList.add('active'));
+
+                    // Revisamos tarjeta por tarjeta
+                    allModulesContainers.forEach(container => {
+                        const card = container.querySelector('.module-card');
+                        if (card) {
+                            // Extraemos el título (ej. "Limpieza de Laboratorio") y el código (ej. "E06")
+                            const title = card.querySelector('.module-title').textContent.toLowerCase();
+                            const code = card.querySelector('.badge-code').textContent.toLowerCase();
+
+                            // Comprobamos si las letras del buscador están dentro del título o del código
+                            if (title.includes(term) || code.includes(term)) {
+                                container.style.display = 'block'; // Mostrar la tarjeta
+                            } else {
+                                container.style.display = 'none'; // Ocultar la tarjeta
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

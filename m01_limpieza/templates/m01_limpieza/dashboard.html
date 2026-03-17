@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3 p-2 bg-light border rounded">
+        <div>
+            <h4 class="m-0">M01 — Limpieza del Laboratorio</h4>
+            <small class="text-muted">Modo Python Puro (Sin JS)</small>
+        </div>
+        <div>
+            <a href="/admin/m01_limpieza/activolimpieza/add/" target="_blank" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-plus"></i> Gestionar Activos
+            </a>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    Captura
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Código de Barras:</label>
+                            <div class="input-group">
+                                <input type="text" name="codigo_barras" class="form-control"
+                                       placeholder="Escanear..."
+                                       value="{{ codigo_preservado|default:'' }}" autofocus>
+
+                                <button type="submit" name="accion" value="buscar" class="btn btn-secondary">
+                                    Buscar
+                                </button>
+                            </div>
+                        </div>
+
+                        {% if activo_encontrado %}
+
+                            <input type="hidden" name="codigo_preservado" value="{{ codigo_preservado }}">
+
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <label>Activo:</label>
+                                    <input type="text" class="form-control bg-light" value="{{ activo_encontrado.nombre }}" readonly>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <label>Zona:</label>
+                                    <input type="text" class="form-control bg-light" value="{{ activo_encontrado.area }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label>Tipo:</label>
+                                    <select name="tipo" class="form-select">
+                                        <option value="RUTINA">RUTINA</option>
+                                        <option value="PROFUNDA">PROFUNDA</option>
+                                        <option value="DESINFECCION">DESINFECCIÓN</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label>Responsable:</label>
+                                    <input type="text" class="form-control" value="{{ request.user.username }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="fw-bold">Checklist:</label>
+                                <div class="border p-2 bg-light" style="max-height: 200px; overflow-y: auto;">
+                                    {% if activo_encontrado.checklist_lista %}
+                                        {% for item in activo_encontrado.checklist_lista %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="check_item" value="{{ item }}" id="chk_{{ forloop.counter }}">
+                                                <label class="form-check-label" for="chk_{{ forloop.counter }}">
+                                                    {{ item }}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p class="text-muted small">Sin checklist configurado.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label>Químicos:</label>
+                                <input type="text" name="quimicos" class="form-control" placeholder="Ej: Cloro">
+                            </div>
+                            <div class="mb-3">
+                                <label>Observaciones:</label>
+                                <textarea name="observaciones" class="form-control" rows="2"></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" name="accion" value="guardar" class="btn btn-success btn-lg">
+                                    Guardar Registro
+                                </button>
+                            </div>
+
+                        {% else %}
+                            <div class="alert alert-info mt-3 text-center">
+                                <i class="fas fa-barcode fa-2x mb-2"></i><br>
+                                Ingresa o escanea un código y pulsa "Buscar" para comenzar.
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-secondary text-white">
+                    Historial Reciente
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0 small">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Activo</th>
+                                <th>Estado</th>
+                                <th>PDF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in registros %}
+                            <tr>
+                                <td>{{ reg.fecha_hora|date:"d/m H:i" }}</td>
+                                <td>
+                                    <strong>{{ reg.nombre_activo_snapshot }}</strong><br>
+                                    <span class="text-muted">{{ reg.area_snapshot }}</span>
+                                </td>
+                                <td>
+                                    {% if reg.estado == 'A TIEMPO' %}
+                                        <span class="badge bg-success">OK</span>
+                                    {% elif reg.estado == 'POR VENCER' %}
+                                        <span class="badge bg-warning text-dark">!</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Vencido</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if reg.evidencia_pdf %}
+                                        <a href="{{ reg.evidencia_pdf.url }}" target="_blank" class="text-danger">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center">Sin datos.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

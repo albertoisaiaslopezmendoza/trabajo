@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}M07 - Formulario NC{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="mb-4">
+        <a href="{% url 'm07_dashboard' %}" class="text-decoration-none text-muted-custom mb-2 d-inline-block">
+            <i class="fas fa-arrow-left me-1"></i> Volver al listado
+        </a>
+        <h3 class="fw-bold text-white">Ficha de No Conformidad / Acción Correctiva</h3>
+    </div>
+
+    <div class="card p-4 shadow-lg border-secondary" style="background-color: var(--ui-surface);">
+        <form method="post" id="ncForm">
+            {% csrf_token %}
+            
+            <div class="row g-3">
+                {% for field in form %}
+                    {% if field.name != 'firma' %}
+                        <div class="col-md-4">
+                            <label class="form-label text-muted-custom fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        {{ field }} {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="mt-5 border border-secondary p-3 rounded bg-dark">
+                <h6 class="text-white mb-3"><i class="fas fa-signature me-2"></i>Firma (Mouse / Táctil)</h6>
+                <canvas id="firmaCanvas" width="500" height="150" class="bg-white rounded border" style="cursor: crosshair; touch-action: none;"></canvas>
+                <div class="mt-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="limpiarFirma()">Limpiar Firma</button>
+                </div>
+            </div>
+
+            <hr class="border-secondary mt-5 mb-4">
+            
+            <div class="text-end">
+                <a href="{% url 'm07_dashboard' %}" class="btn btn-secondary me-2">Cancelar</a>
+                <button type="submit" class="btn btn-primary-custom" onclick="guardarFirma()">
+                    <i class="fas fa-save me-2"></i>Guardar Registro
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Lógica para el Canvas de Firma
+    const canvas = document.getElementById('firmaCanvas');
+    const ctx = canvas.getContext('2d');
+    let dibujando = false;
+
+    // Configuración del pincel
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000';
+
+    function obtenerPosicion(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
+    }
+
+    function iniciarDibujo(e) {
+        e.preventDefault();
+        dibujando = true;
+        const pos = obtenerPosicion(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+    }
+
+    function dibujar(e) {
+        if (!dibujando) return;
+        e.preventDefault();
+        const pos = obtenerPosicion(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+    }
+
+    function detenerDibujo() {
+        dibujando = false;
+        ctx.closePath();
+    }
+
+    // Eventos Mouse
+    canvas.addEventListener('mousedown', iniciarDibujo);
+    canvas.addEventListener('mousemove', dibujar);
+    canvas.addEventListener('mouseup', detenerDibujo);
+    canvas.addEventListener('mouseout', detenerDibujo);
+
+    // Eventos Táctiles (Smartphones/Tablets)
+    canvas.addEventListener('touchstart', iniciarDibujo, {passive: false});
+    canvas.addEventListener('touchmove', dibujar, {passive: false});
+    canvas.addEventListener('touchend', detenerDibujo);
+
+    function limpiarFirma() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('id_firma').value = ""; // Limpiar el input oculto
+    }
+
+    function guardarFirma() {
+        // Extraer la imagen en base64 y guardarla en el campo oculto del formulario
+        const dataURL = canvas.toDataURL('image/png');
+        // Para no guardar un canvas en blanco, verificamos si se dibujó algo (simplificado)
+        const blankCanvas = document.createElement('canvas');
+        blankCanvas.width = canvas.width;
+        blankCanvas.height = canvas.height;
+        if (dataURL !== blankCanvas.toDataURL('image/png')) {
+            document.getElementById('id_firma').value = dataURL;
+        }
+    }
+</script>
+{% endblock %}

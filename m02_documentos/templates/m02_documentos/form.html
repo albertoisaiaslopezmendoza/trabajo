@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <h3>{{ title }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="datos-tab" data-bs-toggle="tab" data-bs-target="#datos" type="button" role="tab">Datos ISO</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contenido-tab" data-bs-toggle="tab" data-bs-target="#contenido" type="button" role="tab">Contenido</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cambios-tab" data-bs-toggle="tab" data-bs-target="#cambios" type="button" role="tab">Cambios</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="dist-tab" data-bs-toggle="tab" data-bs-target="#dist" type="button" role="tab">Distribución</button>
+            </li>
+        </ul>
+
+        <div class="tab-content p-3 border border-top-0" id="myTabContent">
+
+            <div class="tab-pane fade show active" id="datos" role="tabpanel">
+                <div class="row g-3">
+                    <div class="col-md-3">{{ form.codigo.label_tag }} {{ form.codigo }}</div>
+                    <div class="col-md-7">{{ form.titulo.label_tag }} {{ form.titulo }}</div>
+                    <div class="col-md-2">{{ form.version.label_tag }} {{ form.version }}</div>
+
+                    <div class="col-md-4">{{ form.tipo_documento.label_tag }} {{ form.tipo_documento }}</div>
+                    <div class="col-md-4">{{ form.area.label_tag }} {{ form.area }}</div>
+                    <div class="col-md-4">{{ form.estado.label_tag }} {{ form.estado }}</div>
+
+                    <div class="col-md-6">{{ form.fecha_emision.label_tag }} {{ form.fecha_emision }}</div>
+                    <div class="col-md-6">{{ form.vigencia_meses.label_tag }} {{ form.vigencia_meses }}</div>
+                </div>
+                <hr>
+                <h5>Aprobaciones</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        {{ form.elaboro.label_tag }} {{ form.elaboro }}
+                        {{ form.fecha_firma_elaboro }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.reviso.label_tag }} {{ form.reviso }}
+                        {{ form.fecha_firma_reviso }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.aprobo.label_tag }} {{ form.aprobo }}
+                        {{ form.fecha_firma_aprobo }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="contenido" role="tabpanel">
+                <div class="mb-3">{{ form.objetivo.label_tag }} {{ form.objetivo }}</div>
+                <div class="mb-3">{{ form.alcance.label_tag }} {{ form.alcance }}</div>
+                <div class="mb-3">{{ form.responsabilidades.label_tag }} {{ form.responsabilidades }}</div>
+                <div class="mb-3">{{ form.definiciones.label_tag }} {{ form.definiciones }}</div>
+                <div class="mb-3">{{ form.procedimiento.label_tag }} {{ form.procedimiento }}</div>
+                <div class="mb-3">{{ form.registros.label_tag }} {{ form.registros }}</div>
+                <div class="mb-3">{{ form.referencias.label_tag }} {{ form.referencias }}</div>
+                <div class="mb-3">{{ form.anexos.label_tag }} {{ form.anexos }}</div>
+                <div class="alert alert-warning">{{ form.nota_control.label_tag }} {{ form.nota_control }}</div>
+            </div>
+
+            <div class="tab-pane fade" id="cambios" role="tabpanel">
+                {{ form_cambios.management_form }}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr><th>Rev</th><th>Fecha</th><th>Descripción</th><th>Elaboró</th><th>Eliminar</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for f in form_cambios %}
+                        <tr>
+                            <td>{{ f.id }} {{ f.revision }}</td>
+                            <td>{{ f.fecha }}</td>
+                            <td>{{ f.descripcion }}</td>
+                            <td>{{ f.elaboro }}</td>
+                            <td>{{ f.DELETE }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-pane fade" id="dist" role="tabpanel">
+                {{ form_dist.management_form }}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr><th>Área</th><th>Puesto</th><th>Nombre</th><th>Copia Controlada</th><th>Eliminar</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for f in form_dist %}
+                        <tr>
+                            <td>{{ f.id }} {{ f.area }}</td>
+                            <td>{{ f.puesto }}</td>
+                            <td>{{ f.nombre }}</td>
+                            <td>{{ f.copia_controlada }}</td>
+                            <td>{{ f.DELETE }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-success">Guardar Documento</button>
+            <a href="{% url 'm02_documentos:lista' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+
+</div>
+{% endblock %}

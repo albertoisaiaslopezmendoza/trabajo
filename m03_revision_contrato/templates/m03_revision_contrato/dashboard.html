@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}M03 - Revisiones de Contrato{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="fas fa-file-contract text-accent me-2"></i>M03 — Revisión de Solicitudes y Contratos</h2>
+        <a href="{% url 'm03_crear' %}" class="btn btn-primary-custom">
+            <i class="fas fa-plus me-1"></i> Nueva Revisión
+        </a>
+    </div>
+
+    <div class="card bg-dark border-secondary">
+        <div class="card-header border-secondary d-flex justify-content-between">
+            <span class="text-muted text-uppercase fw-bold" style="font-size: 0.85rem;">Historial de Revisiones</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0 align-middle">
+                    <thead class="table-secondary text-uppercase" style="font-size: 0.8rem;">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Folio</th>
+                            <th>Rev.</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Aprobado Por</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rev in revisiones %}
+                        <tr>
+                            <td>{{ rev.fecha_revision|date:"Y-m-d H:i" }}</td>
+                            <td class="text-accent fw-bold">{{ rev.cotizacion.folio }}</td>
+                            <td class="text-center"><span class="badge bg-secondary rounded-pill">{{ rev.revision_no }}</span></td>
+                            <td>{{ rev.cliente }}</td>
+                            <td>
+                                {% if rev.estado == 'APROBADO' %}
+                                    <span class="badge bg-success"><i class="fas fa-check me-1"></i>APROBADO</span>
+                                {% elif rev.estado == 'RECHAZADO' %}
+                                    <span class="badge bg-danger">RECHAZADO</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">BORRADOR</span>
+                                {% endif %}
+                            </td>
+                            <td><small class="text-muted">{{ rev.aprobado_por }}</small></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">No hay revisiones registradas.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

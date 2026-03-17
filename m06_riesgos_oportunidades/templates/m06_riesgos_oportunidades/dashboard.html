@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}M06 - Riesgos y Oportunidades | LabCor{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">M06 · Riesgos y Oportunidades</h2>
+            <small class="text-muted-custom">Matriz · Evaluación (P×I) · Acciones · ISO 17025 (8.5)</small>
+        </div>
+        <div>
+            <a href="{% url 'm06_riesgos_oportunidades:m06_exportar_excel' %}" class="btn btn-success me-2">
+                <i class="fas fa-file-excel"></i> Exportar Excel
+            </a>
+            <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#modalNuevoRiesgo">
+                <i class="fas fa-plus"></i> Nuevo Registro
+            </button>
+        </div>
+    </div>
+
+    <div class="card bg-dark border-secondary mb-4">
+        <div class="card-header border-secondary">
+            <h5 class="mb-0">Matriz (Últimos registros)</h5>
+        </div>
+        <div class="card-body p-0 table-responsive">
+            <table class="table table-dark table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Proceso</th>
+                        <th>Estado</th>
+                        <th>P</th>
+                        <th>I</th>
+                        <th>Nivel</th>
+                        <th>Criticidad</th>
+                        <th>Responsable</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in registros %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td><span class="badge {% if r.tipo == 'Riesgo' %}bg-danger{% else %}bg-success{% endif %}">{{ r.tipo }}</span></td>
+                        <td>{{ r.proceso }}</td>
+                        <td>{{ r.estado }}</td>
+                        <td>{{ r.probabilidad }}</td>
+                        <td>{{ r.impacto }}</td>
+                        <td>{{ r.nivel }}</td>
+                        <td>{{ r.clasificacion }}</td>
+                        <td>{{ r.responsable }}</td>
+                        <td>{{ r.fecha_registro|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="text-center text-muted py-4">No hay registros aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNuevoRiesgo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">Nueva Ficha de Riesgo/Oportunidad</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="formRiesgo">
+                    {% csrf_token %}
+                    <input type="hidden" name="firma_base64" id="firma_base64">
+                    
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Proceso</label>
+                            {{ form.proceso }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo</label>
+                            {{ form.tipo }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Estado</label>
+                            {{ form.estado }}
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <h6 class="text-accent border-bottom border-secondary pb-2">Evaluación (1-5)</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Probabilidad</label>
+                            {{ form.probabilidad }}
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Impacto</label>
+                            {{ form.impacto }}
+                        </div>
+                        
+                        <div class="col-12 mt-4">
+                            <h6 class="text-accent border-bottom border-secondary pb-2">Detalles y Plan de Acción</h6>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Descripción</label>
+                            {{ form.descripcion }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Causa</label>
+                            {{ form.causa }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Consecuencia</label>
+                            {{ form.consecuencia }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Control Actual</label>
+                            {{ form.control_actual }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Acción Planificada</label>
+                            {{ form.accion_plan }}
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <h6 class="text-accent border-bottom border-secondary pb-2">Responsabilidades y Firma</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Responsable</label>
+                            {{ form.responsable }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Revisado Por (Firmante)</label>
+                            {{ form.revisado_por }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Fecha Objetivo</label>
+                            {{ form.fecha_objetivo }}
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <label class="form-label">Firma (Dibujar con el mouse o dedo)</label>
+                            <div class="border rounded bg-white" style="width: 100%; max-width: 500px;">
+                                <canvas id="canvas-firma" width="500" height="150" style="touch-action: none;"></canvas>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-warning mt-2" id="limpiar-firma">
+                                Limpiar Firma
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary-custom" id="btn-guardar">
+                    <i class="fas fa-save"></i> Guardar Registro
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Para que los inputs del form de Django usen las clases de Bootstrap
+        const inputs = document.querySelectorAll('#formRiesgo input, #formRiesgo select, #formRiesgo textarea');
+        inputs.forEach(input => {
+            input.classList.add('form-control', 'bg-dark', 'text-white', 'border-secondary');
+        });
+
+        // Configurar la pizarra de firma
+        const canvas = document.getElementById('canvas-firma');
+        const signaturePad = new SignaturePad(canvas, {
+            backgroundColor: 'rgb(255, 255, 255)' // Fondo blanco para que la imagen se vea bien
+        });
+
+        // Botón limpiar firma
+        document.getElementById('limpiar-firma').addEventListener('click', function() {
+            signaturePad.clear();
+        });
+
+        // Al hacer clic en Guardar
+        document.getElementById('btn-guardar').addEventListener('click', function() {
+            if (!signaturePad.isEmpty()) {
+                // Extraer la firma y colocarla en el input hidden
+                const dataURL = signaturePad.toDataURL("image/png");
+                document.getElementById('firma_base64').value = dataURL;
+            }
+            // Enviar formulario
+            document.getElementById('formRiesgo').submit();
+        });
+    });
+</script>
+{% endblock %}

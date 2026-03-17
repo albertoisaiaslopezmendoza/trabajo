@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}M07 - Acciones Correctivas{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold m-0">M07 · Acciones Correctivas</h2>
+            <p class="text-muted-custom m-0">No conformidades, 5-Why, contención y cierre (ISO 17025)</p>
+        </div>
+        <div>
+            <a href="{% url 'm07_nuevo' %}" class="btn btn-primary-custom">
+                <i class="fas fa-plus me-2"></i>Nuevo Registro
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive rounded border border-secondary" style="background-color: var(--ui-surface);">
+        <table class="table table-dark table-hover mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th class="text-muted-custom ps-4">Código</th>
+                    <th class="text-muted-custom">Proceso</th>
+                    <th class="text-muted-custom">Tipo</th>
+                    <th class="text-muted-custom">Severidad</th>
+                    <th class="text-muted-custom">Estado</th>
+                    <th class="text-muted-custom">Responsable</th>
+                    <th class="text-muted-custom">Fecha Reg.</th>
+                    <th class="text-muted-custom text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nc in registros %}
+                <tr>
+                    <td class="ps-4 fw-bold text-accent">{{ nc.codigo|default:"S/C" }}</td>
+                    <td>{{ nc.proceso }}</td>
+                    <td>{{ nc.tipo }}</td>
+                    <td>
+                        <span class="badge {% if nc.severidad == 'Crítica' %}bg-danger{% elif nc.severidad == 'Alta' %}bg-warning{% else %}bg-secondary{% endif %}">
+                            {{ nc.severidad }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge {% if nc.estado == 'Cerrado' %}bg-success{% elif nc.estado == 'Abierto' %}bg-primary{% else %}bg-info text-dark{% endif %}">
+                            {{ nc.estado }}
+                        </span>
+                    </td>
+                    <td>{{ nc.responsable|default:"-" }}</td>
+                    <td class="text-muted-custom">{{ nc.fecha_registro|date:"Y-m-d" }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'm07_editar' nc.id %}" class="btn btn-sm btn-outline-light">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center py-4 text-muted-custom">No hay registros de acciones correctivas aún.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

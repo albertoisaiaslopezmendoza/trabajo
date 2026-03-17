@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Revisión M03{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4><span class="text-muted">M03 /</span> Nueva Revisión de Contrato</h4>
+        <a href="{% url 'm03_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong><i class="fas fa-exclamation-triangle me-2"></i>No se pudo guardar:</strong>
+        <ul class="mb-0 mt-2">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <form method="post" class="row g-4">
+        {% csrf_token %}
+
+        <div class="col-lg-12">
+            <div class="card bg-surface border-secondary">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted">Folio Cotización *</label>
+                            {{ form.cotizacion }}
+                            <div class="form-text text-muted">
+                                Si está vacío, debes crear cotizaciones en el admin o base de datos primero.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted">Estado de Revisión</label>
+                            {{ form.estado }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label text-muted">Cliente</label>
+                            <input type="text" id="txt_cliente" class="form-control bg-dark text-muted border-secondary" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted">Ensayo</label>
+                            <input type="text" id="txt_ensayo" class="form-control bg-dark text-muted border-secondary" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label text-muted">Norma</label>
+                            <input type="text" id="txt_norma" class="form-control bg-dark text-muted border-secondary" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card bg-surface border-secondary h-100">
+                <div class="card-header border-secondary text-accent fw-bold">
+                    <i class="fas fa-tasks me-2"></i>Revisión ISO 17025 (7.1)
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info py-2 small mb-3">
+                        <i class="fas fa-info-circle"></i> Para cambiar el estado a <strong>APROBADO</strong>, todos los checks superiores deben estar marcados.
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check form-switch">
+                                {{ form.alcance_confirmado }}
+                                <label class="form-check-label" for="{{ form.alcance_confirmado.id_for_label }}">Alcance definido</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check form-switch">
+                                {{ form.capacidad_laboratorio }}
+                                <label class="form-check-label" for="{{ form.capacidad_laboratorio.id_for_label }}">Capacidad técnica</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check form-switch">
+                                {{ form.recursos_disponibles }}
+                                <label class="form-check-label" for="{{ form.recursos_disponibles.id_for_label }}">Recursos disponibles</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check form-switch">
+                                {{ form.metodo_validado }}
+                                <label class="form-check-label" for="{{ form.metodo_validado.id_for_label }}">Método validado</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check form-switch">
+                                {{ form.incertidumbre_conocida }}
+                                <label class="form-check-label" for="{{ form.incertidumbre_conocida.id_for_label }}">Incertidumbre conocida</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check form-switch">
+                                {{ form.plazo_aceptado }}
+                                <label class="form-check-label" for="{{ form.plazo_aceptado.id_for_label }}">Plazo aceptado</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check form-switch">
+                                {{ form.revision_previa_ok }}
+                                <label class="form-check-label" for="{{ form.revision_previa_ok.id_for_label }}">Revisión previa OK</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-secondary my-3">
+
+                    <div class="bg-dark p-3 rounded border border-secondary">
+                        <div class="form-check form-switch mb-2">
+                            {{ form.cambios_detectados }}
+                            <label class="form-check-label text-warning" for="{{ form.cambios_detectados.id_for_label }}">¿Cambios al contrato?</label>
+                        </div>
+                        <label class="form-label text-muted small">Descripción de cambios</label>
+                        {{ form.descripcion_cambios }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card bg-surface border-secondary h-100">
+                <div class="card-header border-secondary">Observaciones</div>
+                <div class="card-body d-flex flex-column">
+                    {{ form.observaciones }}
+
+                    <div class="mt-auto pt-4">
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                            <i class="fas fa-save me-2"></i>Guardar Revisión
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Estilos manuales para los checkboxes de Django
+        document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+            el.classList.add('form-check-input');
+        });
+
+        const selectCot = document.getElementById('{{ form.cotizacion.id_for_label }}');
+
+        // Función para cargar datos
+        function loadCotData(cotId) {
+            if(cotId) {
+                fetch(`/m03/api/cotizacion/${cotId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if(!data.error) {
+                            document.getElementById('txt_cliente').value = data.cliente;
+                            document.getElementById('txt_ensayo').value = data.ensayo;
+                            document.getElementById('txt_norma').value = data.norma;
+                        }
+                    });
+            } else {
+                document.getElementById('txt_cliente').value = '';
+                document.getElementById('txt_ensayo').value = '';
+                document.getElementById('txt_norma').value = '';
+            }
+        }
+
+        // Cargar al cambiar
+        selectCot.addEventListener('change', function() {
+            loadCotData(this.value);
+        });
+
+        // Cargar al inicio si ya hay algo seleccionado (útil si la validación falla y recarga la página)
+        if(selectCot.value) {
+            loadCotData(selectCot.value);
+        }
+    });
+</script>
+{% endblock %}
