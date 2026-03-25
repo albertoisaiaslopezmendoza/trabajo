@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'm05_control_documental',
     'm06_riesgos_oportunidades',
     'm07_acciones_correctivas',
+    'a00_auditoria',
     'module',
     'login',
 ]

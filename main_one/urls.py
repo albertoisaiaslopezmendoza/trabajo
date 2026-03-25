@@ -17,6 +17,7 @@ urlpatterns = [
     path('m05/', include('m05_control_documental.urls')),
     path('m06/', include('m06_riesgos_oportunidades.urls')),
     path('m07/', include('m07_acciones_correctivas.urls')),
+    path('a00/', include('a00_auditoria.urls')),
 ]
 
 # Esto permite servir los archivos PDF subidos/generados durante el desarrollo

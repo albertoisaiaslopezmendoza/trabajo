@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}A00 - Auditoría Automática{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h3 class="mb-0">I00 — Auditoría Automática LIMBS</h3>
+        <div class="d-flex gap-2">
+            <a href="{% url 'a00_init_schema' %}" class="btn btn-outline-secondary btn-sm">Inicializar tabla</a>
+            <a href="{% url 'a00_log_test' %}" class="btn btn-primary btn-sm">Registrar prueba</a>
+            <a href="{% url 'a00_dashboard' %}" class="btn btn-outline-info btn-sm">
+                <i class="fas fa-sync-alt"></i> Refrescar
+            </a>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fw-bold bg-white">Estado de Conexión</div>
+        <div class="card-body">
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label text-muted small mb-1">DSN / Motor BD</label>
+                    <input type="text" class="form-control form-control-sm bg-light" value="{{ dsn }}" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-muted small mb-1">Hostname</label>
+                    <input type="text" class="form-control form-control-sm bg-light" value="{{ hostname }}" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-muted small mb-1">IP</label>
+                    <input type="text" class="form-control form-control-sm bg-light" value="{{ ip }}" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label class="form-label text-muted small mb-1">Estado</label>
+                    <input type="text" class="form-control form-control-sm text-success fw-bold bg-light" value="{{ state }}" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header fw-bold bg-white">Últimos movimientos (Límite: 100)</div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0 align-middle" style="font-size: 0.9rem;">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 15%;">Fecha / hora</th>
+                            <th style="width: 10%;">User ID</th>
+                            <th style="width: 15%;">Usuario</th>
+                            <th style="width: 10%;">Módulo</th>
+                            <th style="width: 15%;">Acción</th>
+                            <th style="width: 35%;">Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log.created_at|date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ log.user_id|default_if_none:"" }}</td>
+                            <td>{{ log.username|default_if_none:"" }}</td>
+                            <td><span class="badge bg-secondary">{{ log.module }}</span></td>
+                            <td>{{ log.action }}</td>
+                            <td class="text-truncate" style="max-width: 300px;" title="{{ log.details }}">
+                                {{ log.details }}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                No hay registros de auditoría aún.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

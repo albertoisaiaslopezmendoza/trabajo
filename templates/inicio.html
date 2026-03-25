@@ -37,6 +37,12 @@
         padding: 3px 8px;
         border-radius: 4px;
     }
+    .iso-badge {
+        font-size: 10px;
+        padding: 4px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
     .module-title {
         font-weight: bold;
         font-size: 14px;
@@ -167,6 +173,16 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #0d6efd;">A0{{ m }}</span>
+                                    {% if m == "0" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.8</span>{% endif %}
+                                    {% if m == "1" %}<span class="badge bg-warning text-dark iso-badge">ISO 4.1 Y 4.2</span>{% endif %}
+                                    {% if m == "2" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2.1 </span>{% endif %}
+                                    {% if m == "3" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2</span>{% endif %}
+                                    {% if m == "4" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2</span>{% endif %}
+                                    {% if m == "5" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2.2</span>{% endif %}
+                                    {% if m == "6" %}<span class="badge bg-warning text-dark iso-badge">ISO 6.2</span>{% endif %}
+                                    {% if m == "7" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2/span>{% endif %}
+                                    {% if m == "8" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.3</span>{% endif %}
+
                                 </div>
                                 <div class="module-title">
                                     {% if m == "0" %} Auditoría Automática
@@ -198,6 +214,12 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #198754;">B0{{ m }}</span>
+                                    {% if m == "1" or m == "2" %}<span class="badge bg-primary iso-badge">ISO 8.3</span>{% endif %}
+                                    {% if m == "4" %}<span class="badge bg-primary iso-badge">ISO 8.2 Y 8.3.2</span>{% endif %}
+                                    {% if m == "5" %}<span class="badge bg-primary iso-badge">ISO 8.4.2</span>{% endif %}
+                                    {% if m == "6" %}<span class="badge bg-primary iso-badge">ISO 8.4.2 Y 7.11.3</span>{% endif %}
+                                    {% if m == "7" %}<span class="badge bg-primary iso-badge">ISO 7.11.2 Y 7.11.3</span>{% endif %}
+
                                 </div>
                                 <div class="module-title">
                                     {% if m == "1" %} Control Documental
@@ -227,6 +249,17 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #dc3545;">{% if m == "0" %}C10{% else %}C0{{ m }}{% endif %}</span>
+                                    {% if m == "1" %}<span class="badge bg-danger iso-badge">ISO 8.5</span>{% endif %}
+                                    {% if m == "2" %}<span class="badge bg-danger iso-badge">ISO 8.5.2</span>{% endif %}
+                                    {% if m == "3" %}<span class="badge bg-danger iso-badge">ISO 8.5.1</span>{% endif %}
+                                    {% if m == "4" %}<span class="badge bg-danger iso-badge">ISO 8.7.1</span>{% endif %}
+                                    {% if m == "5" %}<span class="badge bg-danger iso-badge">ISO 7.9.1</span>{% endif %}
+                                    {% if m == "6" %}<span class="badge bg-danger iso-badge">ISO 7.10.1</span>{% endif %}
+                                    {% if m == "7" %}<span class="badge bg-danger iso-badge">ISO 8.8.1 Y 8.8.2</span>{% endif %}
+                                    {% if m == "8" %}<span class="badge bg-danger iso-badge">ISO 8.9.1</span>{% endif %}
+                                    {% if m == "9" %}<span class="badge bg-danger iso-badge">ISO 8.5.2</span>{% endif %}
+                                    {% if m == "0" %}<span class="badge bg-danger iso-badge">ISO 8.5.2</span>{% endif %}
+
                                 </div>
                                 <div class="module-title">
                                     {% if m == "1" %} Riesgos y Oportunidades
@@ -261,6 +294,23 @@
                                     <span class="badge-code" style="background-color: #6f42c1;">
                                         {% if m == "A" %}D10{% elif m == "B" %}D11{% elif m == "C" %}D12{% elif m == "D" %}D13{% elif m == "E" %}D14{% elif m == "F" %}D15{% elif m == "G" %}D16{% else %}D0{{ m }}{% endif %}
                                     </span>
+                                    {% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
+{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1 y 7.2.1.1</span>{% endif %}
+{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
+{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
+{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
+{% if m == "6" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
+{% if m == "7" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.1 y 7.4.2</span>{% endif %}
+{% if m == "8" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.1 y 7.4.4</span>{% endif %}
+{% if m == "9" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.2.1.5 y 7.2.2.1</span>{% endif %}
+{% if m == "A" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.7.1</span>{% endif %}
+{% if m == "B" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.6.1 y 7.6.3</span>{% endif %}
+{% if m == "C" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.6.2 (a)</span>{% endif %}
+{% if m == "D" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.3.2 y 6.3.3</span>{% endif %}
+{% if m == "E" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.2.1.1</span>{% endif %}
+{% if m == "F" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
+{% if m == "G" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
+
                                 </div>
                                 <div class="module-title">
                                     {% if m == "1" %} Bitácora ASTM B117 (Salina)
@@ -299,6 +349,13 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #0dcaf0;">E0{{ m }}</span>
+
+{% if m == "1" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.3 y 6.4.13 (a)</span>{% endif %}
+{% if m == "2" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.9 y 7.10.1</span>{% endif %}
+{% if m == "3" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.10</span>{% endif %}
+{% if m == "4" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.10</span>{% endif %}
+{% if m == "5" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.1 y 6.4.3</span>{% endif %}
+{% if m == "6" %}<span class="badge bg-info text-dark iso-badge">ISO 6.3.4 (b) y 6.4.3</span>{% endif %}
                                 </div>
                                 <div class="module-title">
                                     {% if m == "1" %} Equipos, Inventario, Mto.
@@ -327,6 +384,11 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #d63384;">F0{{ m }}</span>
+{% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.2.2 y 6.2.5 (f)</span>{% endif %}
+{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.2.5 (e) y 7.11.3 (a)</span>{% endif %}
+{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.3.4 (a)</span>{% endif %}
+{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.2 y 7.11.1</span>{% endif %}
+{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.2</span>{% endif %}
                                 </div>
                                 <div class="module-title">
                                     {% if m == "1" %} Competencia y Formación
@@ -354,6 +416,13 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #ffc107; color: #000;">G0{{ m }}</span>
+
+{% if m == "1" %}<span class="badge bg-success iso-badge">ISO 7.1.1 (a) y 7.1.2</span>{% endif %}
+{% if m == "2" %}<span class="badge bg-success iso-badge">ISO 8.6.2</span>{% endif %}
+{% if m == "3" %}<span class="badge bg-success iso-badge">ISO 7.1.1</span>{% endif %}
+{% if m == "4" %}<span class="badge bg-success iso-badge">ISO 6.6.2</span>{% endif %}
+{% if m == "5" %}<span class="badge bg-success iso-badge">ISO 7.1.1 y 7.1.8</span>{% endif %}
+{% if m == "6" %}<span class="badge bg-success iso-badge">ISO 6.6.3</span>{% endif %}
                                 </div>
                                 <div class="module-title">
                                     {% if m == "1" %} Revisión de Contrato
@@ -382,6 +451,12 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #20c997;">H0{{ m }}</span>
+{% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.1.1 y 7.8.2.1</span>{% endif %}
+{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 8.9.2 (b) y (c)</span>{% endif %}
+{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.2.1</span>{% endif %}
+{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.2.1</span>{% endif %}
+{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.2.1</span>{% endif %}
+{% if m == "6" %}<span class="badge bg-cyan-iso iso-badge">ISO 8.2.1 y 8.5.2</span>{% endif %}
                                 </div>
                                 <div class="module-title">
                                     {% if m == "1" %} Informes ISO
@@ -410,6 +485,13 @@
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <span class="badge-code" style="background-color: #212529;">I0{{ m }}</span>
+{% if m == "0" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (e) y 8.8.2</span>{% endif %}
+{% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (d) y 8.4.2</span>{% endif %}
+{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (a)</span>{% endif %}
+{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (a)</span>{% endif %}
+{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (c)</span>{% endif %}
+{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.2</span>{% endif %}
+{% if m == "6" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (e)</span>{% endif %}
                                 </div>
                                 <div class="module-title">
                                     {% if m == "0" %} Auditoría Automática
