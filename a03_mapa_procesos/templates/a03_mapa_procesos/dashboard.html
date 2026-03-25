@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}A03 - Mapa de Procesos Interactivo{% endblock %}
+
+{% block content %}
+<div class="container-fluid mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0" style="color: #2c3e50;">
+            <i class="fas fa-project-diagram me-2"></i> A03 - Mapa de Procesos Interactivo
+        </h3>
+        <a href="{% url 'inicio' %}" class="btn btn-outline-secondary btn-sm">Volver al Panel</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div id="mynetwork" style="width: 100%; height: 600px; background-color: #0B1220; border-radius: 8px;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+<script type="text/javascript">
+    // Estos son los datos extraídos de tu versión Tkinter
+    var nodes = new vis.DataSet([
+        {id: 1, label: 'Dirección y Estrategia', color: {background:'#1F3A5F', border:'#A7C7E7'}, font:{color:'white'}},
+        {id: 2, label: 'SGC (ISO/IEC 17025)', color: {background:'#2E2A4A', border:'#C9B6FF'}, font:{color:'white'}},
+        {id: 3, label: 'Operaciones del Laboratorio', color: {background:'#1E4D3B', border:'#B7F7D1'}, font:{color:'white'}},
+        {id: 4, label: 'Personal y Competencia', color: {background:'#5A3A1F', border:'#FFD7A7'}, font:{color:'white'}},
+        {id: 5, label: 'Equipos / Metrología', color: {background:'#5A3A1F', border:'#FFD7A7'}, font:{color:'white'}},
+        {id: 6, label: 'Control Documental y Registros', color: {background:'#2E2A4A', border:'#C9B6FF'}, font:{color:'white'}}
+    ]);
+
+    var edges = new vis.DataSet([
+        {from: 1, to: 2, label: 'define', font:{color:'#A7B0C0'}, color:{color:'#9AA0A6'}, arrows: 'to'},
+        {from: 2, to: 3, label: 'controla', font:{color:'#A7B0C0'}, color:{color:'#9AA0A6'}, arrows: 'to'},
+        {from: 4, to: 3, label: 'habilita', font:{color:'#A7B0C0'}, color:{color:'#9AA0A6'}, arrows: 'to'},
+        {from: 5, to: 3, label: 'asegura', font:{color:'#A7B0C0'}, color:{color:'#9AA0A6'}, arrows: 'to'},
+        {from: 6, to: 2, label: 'documenta', font:{color:'#A7B0C0'}, color:{color:'#9AA0A6'}, arrows: 'to'}
+    ]);
+
+    var container = document.getElementById('mynetwork');
+    var data = { nodes: nodes, edges: edges };
+    var options = {
+        physics: { stabilization: true },
+        nodes: { shape: 'box', margin: 15, borderWidth: 2 }
+    };
+    
+    // Inicializar la red
+    var network = new vis.Network(container, data, options);
+</script>
+{% endblock %}

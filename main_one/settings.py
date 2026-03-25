@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'm06_riesgos_oportunidades',
     'm07_acciones_correctivas',
     'a00_auditoria',
+    'a03_mapa_procesos',
+    'a04_mapa_procesos',
     'module',
     'login',
 ]

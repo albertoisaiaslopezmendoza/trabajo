@@ -168,7 +168,7 @@
                 <div class="row g-4">
                     {% for m in "012345678" %}
                     <div class="col-md-6 col-xl-4 module-container">
-                        <a href="{% if m == '1' %}{% url 'm00_imparcialidad:dashboard' %}{% elif m == '2' %}{% url 'm04_manual:dashboard' %}{% else %}#{% endif %}" class="module-card">
+                        <a href="{% if m == '1' %}{% url 'm00_imparcialidad:dashboard' %}{% elif m == '2' %}{% url 'm04_manual:dashboard' %}{% elif m == '3' %}{% url 'a03_mapa_procesos:dashboard' %}{% elif m == '4' %}{% url 'a04_mapa_procesos:mapa_procesos' %}{% else %}#{% endif %}" class="module-card">
                             <div class="module-card-top" style="background-color: #0d6efd;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}A04 - Mapa de Procesos ISO/IEC 17025{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1 text-primary">Mapa de Procesos - ISO/IEC 17025:2017</h2>
+            <p class="text-muted">Laboratorio de Corrosión (LABCOR) | Vista general y detalle por proceso</p>
+        </div>
+        <button class="btn btn-outline-primary" onclick="window.print()"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+    </div>
+
+    <div class="row">
+        {% for grupo, procesos in mapa.items %}
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="card-title mb-0"><i class="fas fa-project-diagram me-2"></i>{{ grupo }}</h5>
+                </div>
+                <div class="card-body" style="background-color: #f8f9fa;">
+                    
+                    {% for p in procesos %}
+                    <div class="card mb-3 module-card border-left-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ p.key }}">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="card-title text-primary fw-bold mb-1">{{ p.key }} · {{ p.name }}</h6>
+                            </div>
+                            <p class="card-text small text-muted text-truncate mb-2">{{ p.purpose }}</p>
+                            <div class="text-end mt-2">
+                                <span class="badge bg-secondary">ISO: {{ p.clauses|join:", " }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modal-{{ p.key }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title fw-bold"><i class="fas fa-info-circle me-2"></i>{{ p.key }} · {{ p.name }}</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body p-4">
+                                    <h6 class="text-primary fw-bold">Propósito</h6>
+                                    <p>{{ p.purpose }}</p>
+                                    
+                                    <div class="row mt-4">
+                                        <div class="col-md-6 mb-3">
+                                            <h6 class="text-primary fw-bold"><i class="fas fa-sign-in-alt me-2"></i>Entradas</h6>
+                                            <ul class="text-muted small">
+                                                {% for entrada in p.inputs %}
+                                                <li>{{ entrada }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <h6 class="text-primary fw-bold"><i class="fas fa-sign-out-alt me-2"></i>Salidas</h6>
+                                            <ul class="text-muted small">
+                                                {% for salida in p.outputs %}
+                                                <li>{{ salida }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <h6 class="text-primary fw-bold"><i class="fas fa-folder-open me-2"></i>Registros / Evidencias</h6>
+                                            <ul class="text-muted small">
+                                                {% for reg in p.records %}
+                                                <li>{{ reg }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6 class="text-primary fw-bold"><i class="fas fa-user-tie me-2"></i>Responsable</h6>
+                                            <p class="text-muted small ms-4">{{ p.owner }}</p>
+                                            
+                                            <h6 class="text-primary fw-bold mt-3"><i class="fas fa-bookmark me-2"></i>Cláusulas ISO</h6>
+                                            <p class="text-muted small ms-4">{{ p.clauses|join:", " }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer bg-light">
+                                    <p class="text-muted small mb-0 me-auto"><i class="fas fa-lightbulb text-warning me-1"></i><strong>Tip de auditoría:</strong> Verifica evidencia trazable, competencia autorizada y control de cambios.</p>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .border-left-primary { border-left: 4px solid var(--bg-topbar) !important; }
+    @media print {
+        .topbar, .btn-outline-primary, .modal { display: none !important; }
+        .main-content { margin-top: 0 !important; padding: 0 !important; }
+        .card { break-inside: avoid; border: 1px solid #000 !important; }
+    }
+</style>
+{% endblock %}

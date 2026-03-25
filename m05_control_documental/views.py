@@ -6,7 +6,7 @@ def dashboard(request):
     # Recuperamos todos los documentos de la base de datos
     documentos = DocumentoControlado.objects.all()
     # Pasamos los documentos al template html
-    return render(request, 'm05_control_documental/dashboard.html', {'documentos': documentos})
+    return render(request, 'm05_control_documental/mapa.html', {'documentos': documentos})
 
 def crear_documento(request):
     # Si la petición es POST, el usuario está enviando datos para guardar
