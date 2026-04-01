@@ -4,7 +4,7 @@
 
 {% block content %}
 <style>
-    /* Estilos específicos para las tarjetas */
+    /* Estilos específicos para las tarjetas (Mantenidos intactos) */
     .module-card {
         display: block;
         border: 1px solid #dee2e6;
@@ -126,388 +126,419 @@
         <h3 class="fw-bold m-0" style="color: #2c3e50;">
             <i class="fas fa-home me-2"></i> Panel Principal
         </h3>
-        <span class="ms-3 text-muted">Accesos Rápidos por Categoría</span>
+        <span class="ms-3 text-muted">Accesos Rápidos por Categoría ISO 17025</span>
     </div>
 
     <div class="dashboard-layout mb-5">
 
         <div class="sidebar-cats">
             <button class="cat-btn active" onclick="mostrarCategoria(event, 'cat-a')">
-                <i class="fas fa-award me-2"></i> A. Sistema de Calidad
+                <i class="fas fa-building me-2"></i> A. Administración
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-b')">
-                <i class="fas fa-folder-open me-2"></i> B. Documentos y Registros
+                <i class="fas fa-handshake me-2"></i> B. Clientes
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-c')">
-                <i class="fas fa-exclamation-triangle me-2"></i> C. Gestión de Riesgos
+                <i class="fas fa-vials me-2"></i> C. Muestras
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-d')">
-                <i class="fas fa-flask me-2"></i> D. Operaciones Laboratorio
+                <i class="fas fa-microscope me-2"></i> D. Equipos
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-e')">
-                <i class="fas fa-microscope me-2"></i> E. Equipos e Infraestructura
+                <i class="fas fa-flask me-2"></i> E. Ensayos
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-f')">
-                <i class="fas fa-users me-2"></i> F. Personal y Competencia
+                <i class="fas fa-file-signature me-2"></i> F. Informes
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-g')">
-                <i class="fas fa-handshake me-2"></i> G. Comercial y Clientes
+                <i class="fas fa-tasks me-2"></i> G. Gestión
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-h')">
-                <i class="fas fa-chart-bar me-2"></i> H. Reportes e Indicadores
+                <i class="fas fa-award me-2"></i> H. SGC ISO 17025
             </button>
             <button class="cat-btn" onclick="mostrarCategoria(event, 'cat-i')">
-                <i class="fas fa-lock me-2"></i> I. Seguridad y Sistema
+                <i class="fas fa-shield-alt me-2"></i> I. Sistema
             </button>
         </div>
 
         <div class="modules-panel">
 
             <div id="cat-a" class="cat-group active">
-                <h4 class="mb-4" style="color: #2c3e50;">A. Sistema de Calidad</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">A. Administración</h4>
                 <div class="row g-4">
-                    {% for m in "012345678" %}
                     <div class="col-md-6 col-xl-4 module-container">
-                        <a href="{% if m == '1' %}{% url 'm00_imparcialidad:dashboard' %}{% elif m == '2' %}{% url 'm04_manual:dashboard' %}{% elif m == '3' %}{% url 'a03_mapa_procesos:dashboard' %}{% elif m == '4' %}{% url 'a04_mapa_procesos:mapa_procesos' %}{% else %}#{% endif %}" class="module-card">
+                        <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #0d6efd;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #0d6efd;">A0{{ m }}</span>
-                                    {% if m == "0" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.8</span>{% endif %}
-                                    {% if m == "1" %}<span class="badge bg-warning text-dark iso-badge">ISO 4.1 Y 4.2</span>{% endif %}
-                                    {% if m == "2" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2.1 </span>{% endif %}
-                                    {% if m == "3" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2</span>{% endif %}
-                                    {% if m == "4" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2</span>{% endif %}
-                                    {% if m == "5" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2.2</span>{% endif %}
-                                    {% if m == "6" %}<span class="badge bg-warning text-dark iso-badge">ISO 6.2</span>{% endif %}
-                                    {% if m == "7" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.2/span>{% endif %}
-                                    {% if m == "8" %}<span class="badge bg-warning text-dark iso-badge">ISO 8.3</span>{% endif %}
-
+                                    <span class="badge-code" style="background-color: #0d6efd;">M01</span>
+                                    <span class="badge bg-warning text-dark iso-badge">ISO 7.1</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "0" %} Auditoría Automática
-                                    {% elif m == "1" %} Imparcialidad y Confidencialidad
-                                    {% elif m == "2" %} SGC Manual de Procesos
-                                    {% elif m == "3" %} Mapa Procesos Interactivo
-                                    {% elif m == "4" %} Mapa Procesos ISO 17025
-                                    {% elif m == "5" %} Liderazgo ISO 17025
-                                    {% elif m == "6" %} Inducción ISO 17025
-                                    {% elif m == "7" %} Diagrama de Tortuga
-                                    {% elif m == "8" %} Consulta y Distribución Doc.
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Revisión de Solicitudes y Contratos</div>
                                 <span class="btn-open" style="background-color: #0d6efd;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #0d6efd;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0d6efd;">M07</span>
+                                    <span class="badge bg-warning text-dark iso-badge">ISO 5 / 4.1 / 6.2</span>
+                                </div>
+                                <div class="module-title">Estructura Organizacional y Roles</div>
+                                <span class="btn-open" style="background-color: #0d6efd;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #0d6efd;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0d6efd;">M11</span>
+                                    <span class="badge bg-warning text-dark iso-badge">ISO 6.6</span>
+                                </div>
+                                <div class="module-title">Reactivos, Consumibles y Servicios</div>
+                                <span class="btn-open" style="background-color: #0d6efd;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="cat-b" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">B. Documentos y Registros</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">B. Clientes</h4>
                 <div class="row g-4">
-                    {% for m in "1234567" %}
                     <div class="col-md-6 col-xl-4 module-container">
-                        <a href="{% if m == '1' %}{% url 'm05_control_documental:dashboard' %}{% elif m == '2' %}{% url 'm02_documentos:lista' %}{% else %}#{% endif %}" class="module-card">
+                        <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #198754;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #198754;">B0{{ m }}</span>
-                                    {% if m == "1" or m == "2" %}<span class="badge bg-primary iso-badge">ISO 8.3</span>{% endif %}
-                                    {% if m == "4" %}<span class="badge bg-primary iso-badge">ISO 8.2 Y 8.3.2</span>{% endif %}
-                                    {% if m == "5" %}<span class="badge bg-primary iso-badge">ISO 8.4.2</span>{% endif %}
-                                    {% if m == "6" %}<span class="badge bg-primary iso-badge">ISO 8.4.2 Y 7.11.3</span>{% endif %}
-                                    {% if m == "7" %}<span class="badge bg-primary iso-badge">ISO 7.11.2 Y 7.11.3</span>{% endif %}
-
+                                    <span class="badge-code" style="background-color: #198754;">M02</span>
+                                    <span class="badge bg-primary iso-badge">ISO 4.2 / 7.11</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "1" %} Control Documental
-                                    {% elif m == "2" %} Documentos Controlados
-                                    {% elif m == "3" %} Machote ISO (Word/PDF)
-                                    {% elif m == "4" %} Editor Diagramas Flujo
-                                    {% elif m == "5" %} Control Registros
-                                    {% elif m == "6" %} Firmas y Consentimiento
-                                    {% elif m == "7" %} Integridad de Datos
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Clientes y Confidencialidad</div>
                                 <span class="btn-open" style="background-color: #198754;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #198754;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #198754;">M17</span>
+                                    <span class="badge bg-primary iso-badge">ISO 7.9</span>
+                                </div>
+                                <div class="module-title">Gestión de Quejas</div>
+                                <span class="btn-open" style="background-color: #198754;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="cat-c" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">C. Gestión de Riesgos</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">C. Muestras</h4>
                 <div class="row g-4">
-                    {% for m in "1234567890" %}
                     <div class="col-md-6 col-xl-4 module-container">
-                        <a href="{% if m == '1' %}{% url 'm06_riesgos_oportunidades:m06_dashboard' %}{% elif m == '4' %}{% url 'm07_dashboard' %}{% else %}#{% endif %}" class="module-card">
+                        <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #dc3545;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #dc3545;">{% if m == "0" %}C10{% else %}C0{{ m }}{% endif %}</span>
-                                    {% if m == "1" %}<span class="badge bg-danger iso-badge">ISO 8.5</span>{% endif %}
-                                    {% if m == "2" %}<span class="badge bg-danger iso-badge">ISO 8.5.2</span>{% endif %}
-                                    {% if m == "3" %}<span class="badge bg-danger iso-badge">ISO 8.5.1</span>{% endif %}
-                                    {% if m == "4" %}<span class="badge bg-danger iso-badge">ISO 8.7.1</span>{% endif %}
-                                    {% if m == "5" %}<span class="badge bg-danger iso-badge">ISO 7.9.1</span>{% endif %}
-                                    {% if m == "6" %}<span class="badge bg-danger iso-badge">ISO 7.10.1</span>{% endif %}
-                                    {% if m == "7" %}<span class="badge bg-danger iso-badge">ISO 8.8.1 Y 8.8.2</span>{% endif %}
-                                    {% if m == "8" %}<span class="badge bg-danger iso-badge">ISO 8.9.1</span>{% endif %}
-                                    {% if m == "9" %}<span class="badge bg-danger iso-badge">ISO 8.5.2</span>{% endif %}
-                                    {% if m == "0" %}<span class="badge bg-danger iso-badge">ISO 8.5.2</span>{% endif %}
-
+                                    <span class="badge-code" style="background-color: #dc3545;">M03</span>
+                                    <span class="badge bg-danger iso-badge">ISO 7.3 / 7.5</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "1" %} Riesgos y Oportunidades
-                                    {% elif m == "2" %} Matriz de Riesgos
-                                    {% elif m == "3" %} Gestión de Amenazas
-                                    {% elif m == "4" %} Acciones Correctivas
-                                    {% elif m == "5" %} Gestión de Quejas
-                                    {% elif m == "6" %} Trabajo No Conforme
-                                    {% elif m == "7" %} Auditorías Internas
-                                    {% elif m == "8" %} Revisión por la Dirección
-                                    {% elif m == "9" %} ISO 17025 Matriz Riesgos
-                                    {% elif m == "0" %} ISO 17025 Riesgos DB
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Muestreo y Cadena de Custodia</div>
                                 <span class="btn-open" style="background-color: #dc3545;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #dc3545;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #dc3545;">M04</span>
+                                    <span class="badge bg-danger iso-badge">ISO 7.4 / 7.5</span>
+                                </div>
+                                <div class="module-title">Recepción y Manejo de Muestras</div>
+                                <span class="btn-open" style="background-color: #dc3545;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="cat-d" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">D. Operaciones de Laboratorio</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">D. Equipos</h4>
                 <div class="row g-4">
-                    {% for m in "123456789ABCDEF" %}
                     <div class="col-md-6 col-xl-4 module-container">
                         <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #6f42c1;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #6f42c1;">
-                                        {% if m == "A" %}D10{% elif m == "B" %}D11{% elif m == "C" %}D12{% elif m == "D" %}D13{% elif m == "E" %}D14{% elif m == "F" %}D15{% elif m == "G" %}D16{% else %}D0{{ m }}{% endif %}
-                                    </span>
-                                    {% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
-{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1 y 7.2.1.1</span>{% endif %}
-{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
-{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
-{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
-{% if m == "6" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
-{% if m == "7" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.1 y 7.4.2</span>{% endif %}
-{% if m == "8" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.1 y 7.4.4</span>{% endif %}
-{% if m == "9" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.2.1.5 y 7.2.2.1</span>{% endif %}
-{% if m == "A" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.7.1</span>{% endif %}
-{% if m == "B" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.6.1 y 7.6.3</span>{% endif %}
-{% if m == "C" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.6.2 (a)</span>{% endif %}
-{% if m == "D" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.3.2 y 6.3.3</span>{% endif %}
-{% if m == "E" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.2.1.1</span>{% endif %}
-{% if m == "F" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
-{% if m == "G" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.5.1</span>{% endif %}
-
+                                    <span class="badge-code" style="background-color: #6f42c1;">M08</span>
+                                    <span class="badge bg-secondary iso-badge">ISO 6.4 / 6.5</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "1" %} Bitácora ASTM B117 (Salina)
-                                    {% elif m == "2" %} Cámara Salina ISO 9227
-                                    {% elif m == "3" %} Bitácora Tensión ASTM E8
-                                    {% elif m == "4" %} Dureza Rockwell ASTM E18
-                                    {% elif m == "5" %} Bitácora pH Extech
-                                    {% elif m == "6" %} pH Controlador
-                                    {% elif m == "7" %} Registro de Muestras
-                                    {% elif m == "8" %} Custodia de Muestras
-                                    {% elif m == "9" %} Métodos Valid. y Verif.
-                                    {% elif m == "A" %} Aseguramiento de Resultados
-                                    {% elif m == "B" %} Incertidumbre Medición
-                                    {% elif m == "C" %} Reactivos y Soluciones
-                                    {% elif m == "D" %} Condiciones Ambientales
-                                    {% elif m == "E" %} Corrosión e Integridad
-                                    {% elif m == "F" %} ASTM C876, NACE, AMPP
-                                    {% elif m == "G" %} Medición de pH
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Equipos y Mantenimiento</div>
                                 <span class="btn-open" style="background-color: #6f42c1;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #6f42c1;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #6f42c1;">M09</span>
+                                    <span class="badge bg-secondary iso-badge">ISO 6.5</span>
+                                </div>
+                                <div class="module-title">Trazabilidad Metrológica y MRC</div>
+                                <span class="btn-open" style="background-color: #6f42c1;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="cat-e" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">E. Equipos e Infraestructura</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">E. Ensayos</h4>
                 <div class="row g-4">
-                    {% for m in "123456" %}
                     <div class="col-md-6 col-xl-4 module-container">
-                        <a href="{% if m == '6' %}{% url 'm01_dashboard' %}{% else %}#{% endif %}" class="module-card">
+                        <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #0dcaf0;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #0dcaf0;">E0{{ m }}</span>
-
-{% if m == "1" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.3 y 6.4.13 (a)</span>{% endif %}
-{% if m == "2" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.9 y 7.10.1</span>{% endif %}
-{% if m == "3" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.10</span>{% endif %}
-{% if m == "4" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.10</span>{% endif %}
-{% if m == "5" %}<span class="badge bg-info text-dark iso-badge">ISO 6.4.1 y 6.4.3</span>{% endif %}
-{% if m == "6" %}<span class="badge bg-info text-dark iso-badge">ISO 6.3.4 (b) y 6.4.3</span>{% endif %}
+                                    <span class="badge-code" style="background-color: #0dcaf0; color: #000;">M05</span>
+                                    <span class="badge bg-info text-dark iso-badge">ISO 7.2 / 8.3</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "1" %} Equipos, Inventario, Mto.
-                                    {% elif m == "2" %} Impacto Equipo Fuera Servicio
-                                    {% elif m == "3" %} Visor DTL Cámara Salina
-                                    {% elif m == "4" %} Visor DTL Genérico
-                                    {% elif m == "5" %} Admin. Activos Internos
-                                    {% elif m == "6" %} Limpieza de Laboratorio
-                                    {% endif %}
-                                </div>
-                                <span class="btn-open" style="background-color: #0dcaf0;">▶ Abrir módulo</span>
+                                <div class="module-title">Métodos y SOPs Vigentes</div>
+                                <span class="btn-open" style="background-color: #0dcaf0; color: #000;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #0dcaf0;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0dcaf0; color: #000;">M06</span>
+                                    <span class="badge bg-info text-dark iso-badge">ISO 6.2</span>
+                                </div>
+                                <div class="module-title">Competencia del Personal</div>
+                                <span class="btn-open" style="background-color: #0dcaf0; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #0dcaf0;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0dcaf0; color: #000;">M10</span>
+                                    <span class="badge bg-info text-dark iso-badge">ISO 6.3</span>
+                                </div>
+                                <div class="module-title">Condiciones Ambientales</div>
+                                <span class="btn-open" style="background-color: #0dcaf0; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #0dcaf0;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0dcaf0; color: #000;">M12</span>
+                                    <span class="badge bg-info text-dark iso-badge">ISO 7.5</span>
+                                </div>
+                                <div class="module-title">Ejecución y Registros Técnicos</div>
+                                <span class="btn-open" style="background-color: #0dcaf0; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #0dcaf0;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0dcaf0; color: #000;">M13</span>
+                                    <span class="badge bg-info text-dark iso-badge">ISO 7.6 / 7.8</span>
+                                </div>
+                                <div class="module-title">Cálculos e Incertidumbre</div>
+                                <span class="btn-open" style="background-color: #0dcaf0; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #0dcaf0;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #0dcaf0; color: #000;">M14</span>
+                                    <span class="badge bg-info text-dark iso-badge">ISO 7.7</span>
+                                </div>
+                                <div class="module-title">Aseguramiento Validez (QC / PT)</div>
+                                <span class="btn-open" style="background-color: #0dcaf0; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="cat-f" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">F. Personal y Competencia</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">F. Informes</h4>
                 <div class="row g-4">
-                    {% for m in "12345" %}
                     <div class="col-md-6 col-xl-4 module-container">
                         <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #d63384;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #d63384;">F0{{ m }}</span>
-{% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.2.2 y 6.2.5 (f)</span>{% endif %}
-{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.2.5 (e) y 7.11.3 (a)</span>{% endif %}
-{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 6.3.4 (a)</span>{% endif %}
-{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.2 y 7.11.1</span>{% endif %}
-{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.4.2</span>{% endif %}
+                                    <span class="badge-code" style="background-color: #d63384;">M15</span>
+                                    <span class="badge bg-danger iso-badge">ISO 7.8</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "1" %} Competencia y Formación
-                                    {% elif m == "2" %} Usuarios y Permisos
-                                    {% elif m == "3" %} Control Ingreso Laboratorio
-                                    {% elif m == "4" %} Códigos de Barras
-                                    {% elif m == "5" %} Generador QR
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Emisión de Informes y Certificados</div>
                                 <span class="btn-open" style="background-color: #d63384;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
 
             <div id="cat-g" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">G. Comercial y Clientes</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">G. Gestión</h4>
                 <div class="row g-4">
-                    {% for m in "123456" %}
                     <div class="col-md-6 col-xl-4 module-container">
-                        <a href="{% if m == '1' %}{% url 'm03_dashboard' %}{% else %}#{% endif %}" class="module-card">
+                        <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #ffc107;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #ffc107; color: #000;">G0{{ m }}</span>
-
-{% if m == "1" %}<span class="badge bg-success iso-badge">ISO 7.1.1 (a) y 7.1.2</span>{% endif %}
-{% if m == "2" %}<span class="badge bg-success iso-badge">ISO 8.6.2</span>{% endif %}
-{% if m == "3" %}<span class="badge bg-success iso-badge">ISO 7.1.1</span>{% endif %}
-{% if m == "4" %}<span class="badge bg-success iso-badge">ISO 6.6.2</span>{% endif %}
-{% if m == "5" %}<span class="badge bg-success iso-badge">ISO 7.1.1 y 7.1.8</span>{% endif %}
-{% if m == "6" %}<span class="badge bg-success iso-badge">ISO 6.6.3</span>{% endif %}
+                                    <span class="badge-code" style="background-color: #ffc107; color: #000;">M18</span>
+                                    <span class="badge bg-dark iso-badge">ISO 7.10 / 8.7</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "1" %} Revisión de Contrato
-                                    {% elif m == "2" %} Enfoque al Cliente
-                                    {% elif m == "3" %} Cotizador Corrosión
-                                    {% elif m == "4" %} Proveedores y Compras
-                                    {% elif m == "5" %} Acuerdo Servicios Técnicos
-                                    {% elif m == "6" %} Orden de Compra
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Trabajo No Conforme</div>
                                 <span class="btn-open" style="background-color: #ffc107; color: #000;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #ffc107;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #ffc107; color: #000;">M19</span>
+                                    <span class="badge bg-dark iso-badge">ISO 8.5 / 4.1</span>
+                                </div>
+                                <div class="module-title">Riesgos y Oportunidades</div>
+                                <span class="btn-open" style="background-color: #ffc107; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #ffc107;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #ffc107; color: #000;">M20</span>
+                                    <span class="badge bg-dark iso-badge">ISO 8.6 / 8.7</span>
+                                </div>
+                                <div class="module-title">Acciones Correctivas y Mejora</div>
+                                <span class="btn-open" style="background-color: #ffc107; color: #000;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="cat-h" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">H. Reportes e Indicadores</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">H. SGC ISO 17025</h4>
                 <div class="row g-4">
-                    {% for m in "123456" %}
                     <div class="col-md-6 col-xl-4 module-container">
                         <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #20c997;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #20c997;">H0{{ m }}</span>
-{% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.1.1 y 7.8.2.1</span>{% endif %}
-{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 8.9.2 (b) y (c)</span>{% endif %}
-{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.2.1</span>{% endif %}
-{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.2.1</span>{% endif %}
-{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.8.2.1</span>{% endif %}
-{% if m == "6" %}<span class="badge bg-cyan-iso iso-badge">ISO 8.2.1 y 8.5.2</span>{% endif %}
+                                    <span class="badge-code" style="background-color: #20c997;">M21</span>
+                                    <span class="badge bg-success iso-badge">ISO 8.2 / 8.3</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "1" %} Informes ISO
-                                    {% elif m == "2" %} KPIs ISO 17025
-                                    {% elif m == "3" %} Reporte XRF
-                                    {% elif m == "4" %} Reporte Cámara Salina
-                                    {% elif m == "5" %} Bitácora Tensión ASTM E8
-                                    {% elif m == "6" %} Gantt ISO 17025
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Control Documental del SGC</div>
                                 <span class="btn-open" style="background-color: #20c997;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #20c997;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #20c997;">M22</span>
+                                    <span class="badge bg-success iso-badge">ISO 8.4 / 7.5</span>
+                                </div>
+                                <div class="module-title">Control de Registros</div>
+                                <span class="btn-open" style="background-color: #20c997;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #20c997;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #20c997;">M23</span>
+                                    <span class="badge bg-success iso-badge">ISO 8.8</span>
+                                </div>
+                                <div class="module-title">Auditorías Internas</div>
+                                <span class="btn-open" style="background-color: #20c997;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #20c997;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #20c997;">M24</span>
+                                    <span class="badge bg-success iso-badge">ISO 8.9</span>
+                                </div>
+                                <div class="module-title">Revisión por la Dirección</div>
+                                <span class="btn-open" style="background-color: #20c997;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xl-4 module-container">
+                        <a href="#" class="module-card">
+                            <div class="module-card-top" style="background-color: #20c997;"></div>
+                            <div class="module-card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="badge-code" style="background-color: #20c997;">M25</span>
+                                    <span class="badge bg-success iso-badge">ISO 4.1</span>
+                                </div>
+                                <div class="module-title">Imparcialidad y Confidencialidad</div>
+                                <span class="btn-open" style="background-color: #20c997;">▶ Abrir módulo</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="cat-i" class="cat-group">
-                <h4 class="mb-4" style="color: #2c3e50;">I. Seguridad y Sistema</h4>
+                <h4 class="mb-4" style="color: #2c3e50;">I. Sistema</h4>
                 <div class="row g-4">
-                    {% for m in "0123456" %}
                     <div class="col-md-6 col-xl-4 module-container">
                         <a href="#" class="module-card">
                             <div class="module-card-top" style="background-color: #212529;"></div>
                             <div class="module-card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <span class="badge-code" style="background-color: #212529;">I0{{ m }}</span>
-{% if m == "0" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (e) y 8.8.2</span>{% endif %}
-{% if m == "1" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (d) y 8.4.2</span>{% endif %}
-{% if m == "2" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (a)</span>{% endif %}
-{% if m == "3" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (a)</span>{% endif %}
-{% if m == "4" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (c)</span>{% endif %}
-{% if m == "5" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.2</span>{% endif %}
-{% if m == "6" %}<span class="badge bg-cyan-iso iso-badge">ISO 7.11.3 (e)</span>{% endif %}
+                                    <span class="badge-code" style="background-color: #212529;">M16</span>
+                                    <span class="badge bg-secondary iso-badge">ISO 7.11 / 8.4</span>
                                 </div>
-                                <div class="module-title">
-                                    {% if m == "0" %} Auditoría Automática
-                                    {% elif m == "1" %} Audit View
-                                    {% elif m == "2" %} Movimientos Usuarios
-                                    {% elif m == "3" %} Usuarios Administradores
-                                    {% elif m == "4" %} Backups y Restore
-                                    {% elif m == "5" %} Control Cambios SW
-                                    {% elif m == "6" %} Estado BD y Reconectar
-                                    {% endif %}
-                                </div>
+                                <div class="module-title">Control de Datos y Audit Trail</div>
                                 <span class="btn-open" style="background-color: #212529;">▶ Abrir módulo</span>
                             </div>
                         </a>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
 
@@ -529,14 +560,14 @@
                 <tbody>
                     <tr>
                         <td class="ps-4 fw-bold" style="color: #2c3e50;">admin</td>
-                        <td><span class="badge" style="background-color: #6f42c1;">D07</span></td>
-                        <td style="color: #34495e;">Alta de muestra COR-2026-001</td>
+                        <td><span class="badge" style="background-color: #212529;">M16</span></td>
+                        <td style="color: #34495e;">Respaldo de base de datos exitoso</td>
                         <td class="text-muted small">Hace 10 min</td>
                     </tr>
                     <tr>
-                        <td class="ps-4 fw-bold" style="color: #2c3e50;">invitado</td>
-                        <td><span class="badge" style="background-color: #d63384;">F03</span></td>
-                        <td style="color: #34495e;">Ingreso detectado al laboratorio</td>
+                        <td class="ps-4 fw-bold" style="color: #2c3e50;">director</td>
+                        <td><span class="badge" style="background-color: #dc3545;">M04</span></td>
+                        <td style="color: #34495e;">Alta de muestra COR-2026-001</td>
                         <td class="text-muted small">Hace 35 min</td>
                     </tr>
                 </tbody>
@@ -551,18 +582,14 @@
     // FUNCION PARA INTERCAMBIAR ENTRE CATEGORIAS
     // -----------------------------------------------------------
     function mostrarCategoria(evento, idCategoria) {
-        // 1. Quitar la clase 'active' de todos los botones
         let botones = document.querySelectorAll('.cat-btn');
         botones.forEach(btn => btn.classList.remove('active'));
 
-        // 2. Ocultar todos los grupos de módulos
         let grupos = document.querySelectorAll('.cat-group');
         grupos.forEach(grupo => grupo.classList.remove('active'));
 
-        // 3. Mostrar el grupo seleccionado
         document.getElementById(idCategoria).classList.add('active');
 
-        // 4. Activar el botón correspondiente (incluso si fue llamado por la limpieza de búsqueda)
         if(evento) {
             evento.currentTarget.classList.add('active');
         } else {
@@ -579,18 +606,12 @@
 
         if (searchInput) {
             searchInput.addEventListener('input', function(e) {
-                // Obtenemos lo que escribió el usuario y lo pasamos a minúsculas
                 const term = e.target.value.toLowerCase().trim();
-
-                // Obtenemos todas las tarjetas y las categorías
                 const allModulesContainers = document.querySelectorAll('.module-container');
                 const catGroups = document.querySelectorAll('.cat-group');
 
                 if (term === '') {
-                    // Si no hay nada escrito, restauramos la vista normal
                     allModulesContainers.forEach(container => container.style.display = 'block');
-
-                    // Volvemos a la pestaña que estaba seleccionada o la "A" por defecto
                     const activeBtn = document.querySelector('.cat-btn.active');
                     if (activeBtn) {
                         activeBtn.click();
@@ -598,22 +619,17 @@
                         mostrarCategoria(null, 'cat-a');
                     }
                 } else {
-                    // Modo Búsqueda: Mostramos todos los grupos para poder buscar en todos lados a la vez
                     catGroups.forEach(group => group.classList.add('active'));
-
-                    // Revisamos tarjeta por tarjeta
                     allModulesContainers.forEach(container => {
                         const card = container.querySelector('.module-card');
                         if (card) {
-                            // Extraemos el título (ej. "Limpieza de Laboratorio") y el código (ej. "E06")
                             const title = card.querySelector('.module-title').textContent.toLowerCase();
                             const code = card.querySelector('.badge-code').textContent.toLowerCase();
 
-                            // Comprobamos si las letras del buscador están dentro del título o del código
                             if (title.includes(term) || code.includes(term)) {
-                                container.style.display = 'block'; // Mostrar la tarjeta
+                                container.style.display = 'block';
                             } else {
-                                container.style.display = 'none'; // Ocultar la tarjeta
+                                container.style.display = 'none';
                             }
                         }
                     });
