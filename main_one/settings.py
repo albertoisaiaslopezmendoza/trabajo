@@ -25,6 +25,9 @@ INSTALLED_APPS = [
     'a00_auditoria',
     'a03_mapa_procesos',
     'a04_mapa_procesos',
+    'aa_m01_revision_contrato',
+    'a_m07_roles_permisos',
+    'm11_reactivos',
     'module',
     'login',
 ]

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard M11 - Reactivos y Consumibles{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0 mb-5">
+    <div class="d-flex align-items-center mb-4">
+        <h3 class="fw-bold m-0" style="color: #2c3e50;">
+            <i class="fas fa-flask me-2"></i> M11 - Reactivos, Consumibles y Servicios
+        </h3>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary h-100 shadow-sm position-relative transition-hover">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-vials me-2"></i> Reactivos</h5>
+                    <p class="card-text fs-1 fw-bold">{{ reactivos_count }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="{% url 'm11_lista_reactivos' %}" class="text-white text-decoration-none stretched-link">
+                        Ver catálogo <i class="fas fa-arrow-circle-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning text-dark h-100 shadow-sm position-relative transition-hover">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-boxes me-2"></i> Lotes Recibidos</h5>
+                    <p class="card-text fs-1 fw-bold">{{ lotes_count }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="{% url 'm11_lista_lotes' %}" class="text-dark text-decoration-none stretched-link fw-bold">
+                        Ver inventario <i class="fas fa-arrow-circle-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success h-100 shadow-sm position-relative transition-hover">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-truck-moving me-2"></i> Proveedores</h5>
+                    <p class="card-text fs-1 fw-bold">{{ proveedores_count }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="#" class="text-white text-decoration-none stretched-link">
+                        Ver aprobados <i class="fas fa-arrow-circle-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info text-dark h-100 shadow-sm position-relative transition-hover">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-tools me-2"></i> Servicios</h5>
+                    <p class="card-text fs-1 fw-bold">{{ servicios_count }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="#" class="text-dark text-decoration-none stretched-link fw-bold">
+                        Ver historial <i class="fas fa-arrow-circle-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .transition-hover {
+        transition: transform 0.2s ease-in-out;
+    }
+    .transition-hover:hover {
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}

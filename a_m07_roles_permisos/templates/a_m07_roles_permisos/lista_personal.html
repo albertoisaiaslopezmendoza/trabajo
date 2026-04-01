@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}M07 - Estructura y Roles{% endblock %}
+
+{% block content %}
+<div class="container-fluid mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold" style="color: #2c3e50;"><i class="fas fa-users-cog me-2"></i>M07 Estructura y Roles</h3>
+        <div>
+            <a href="{% url 'a_m07_roles_permisos:lista_puestos' %}" class="btn btn-outline-secondary me-2"><i class="fas fa-briefcase me-1"></i> Ver Puestos (Organigrama)</a>
+            <a href="{% url 'a_m07_roles_permisos:crear_personal' %}" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i> Nuevo Personal</a>
+        </div>
+    </div>
+    
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Usuario (Sistema)</th>
+                        <th>Nombre Completo</th>
+                        <th>Perfil de Puesto</th>
+                        <th>Rol (RBAC)</th>
+                        <th>Suplente Oficial</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp in empleados %}
+                    <tr>
+                        <td class="fw-bold text-primary">{{ emp.usuario.username }}</td>
+                        <td>{{ emp.usuario.get_full_name }}</td>
+                        <td>{{ emp.puesto.nombre }}</td>
+                        <td><span class="badge bg-info text-dark">{{ emp.puesto.rol_sistema.name|default:"Sin Rol Asignado" }}</span></td>
+                        <td class="text-muted">{{ emp.es_suplente_de.get_full_name|default:"N/A" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No hay personal registrado aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

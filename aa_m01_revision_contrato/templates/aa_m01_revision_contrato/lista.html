@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}M01 - Revisión de Contratos{% endblock %}
+
+{% block content %}
+<div class="container-fluid mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold" style="color: #2c3e50;"><i class="fas fa-file-contract me-2"></i>M01 Revisión de Contratos</h3>
+        <a href="{% url 'aa_m01_revision_contrato:crear' %}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Nueva Solicitud</a>
+    </div>
+    
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Folio</th>
+                        <th>Cliente</th>
+                        <th>Método Solicitado</th>
+                        <th>Estado</th>
+                        <th>Fecha Solicitud</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in contratos %}
+                    <tr>
+                        <td class="fw-bold text-primary">{{ c.folio }}</td>
+                        <td>{{ c.cliente }}</td>
+                        <td>{{ c.metodo_ensayo }}</td>
+                        <td>
+                            {% if c.estado == 'PENDIENTE' %}<span class="badge bg-warning text-dark">Pendiente</span>{% endif %}
+                            {% if c.estado == 'APROBADO' %}<span class="badge bg-success">Aprobado</span>{% endif %}
+                            {% if c.estado == 'RECHAZADO' %}<span class="badge bg-danger">Rechazado</span>{% endif %}
+                        </td>
+                        <td class="text-muted">{{ c.fecha_solicitud|date:"d/m/Y" }}</td>
+                        <td>
+                            <a href="{% url 'aa_m01_revision_contrato:editar' c.pk %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No hay contratos registrados aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
