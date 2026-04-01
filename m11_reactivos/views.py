@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Reactivo, Proveedor, LoteReactivo, ServicioExterno
+from .forms import ReactivoForm, LoteReactivoForm
 
 def dashboard(request):
     reactivos_count = Reactivo.objects.count()
