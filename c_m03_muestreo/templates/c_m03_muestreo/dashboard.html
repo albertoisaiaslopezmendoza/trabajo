@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Muestreo y Cadena de Custodia{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-vial"></i> Muestreo y Custodia (ISO 17025: 7.3)</h2>
+        <a href="{% url 'c_m03_nueva_muestra' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Registrar Muestreo</a>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                        <th>Fecha Muestreo</th>
+                        <th>Responsable</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in muestras %}
+                    <tr>
+                        <td><strong>{{ m.codigo }}</strong></td>
+                        <td>{{ m.descripcion|truncatechars:50 }}</td>
+                        <td>{{ m.fecha_muestreo|date:"d/m/Y H:i" }}</td>
+                        <td>{{ m.responsable_muestreo }}</td>
+                        <td>
+                            <a href="{% url 'c_m03_custodia' m.id %}" class="btn btn-sm btn-info">Cadena de Custodia</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="text-center">No hay muestras registradas.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

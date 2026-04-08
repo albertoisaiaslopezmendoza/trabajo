@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <h4 class="mb-0 fw-bold"><i class="fas fa-microscope me-2"></i> {{ titulo }}</h4>
+                </div>
+                <div class="card-body bg-light">
+                    
+                    <div class="alert alert-info small mb-4 shadow-sm">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <strong>Nota ISO 17025 (6.4):</strong> Asegúrese de registrar correctamente el número de serie y modelo para garantizar la trazabilidad de las calibraciones y mantenimientos futuros.
+                    </div>
+
+                    <form method="post" class="bg-white p-4 border rounded shadow-sm">
+                        {% csrf_token %}
+                        
+                        {{ form|crispy }}
+                        
+                        <div class="mt-4 text-end border-top pt-3">
+                            <a href="{% url 'd_m08_dashboard' %}" class="btn btn-secondary shadow-sm me-2">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary shadow-sm">
+                                <i class="fas fa-save"></i> Guardar Equipo
+                            </button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

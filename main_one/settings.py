@@ -30,6 +30,12 @@ INSTALLED_APPS = [
     'm11_reactivos',
     'b_m02_clientes',
     'b_m17_gestion_quejas',
+    'c_m03_muestreo',
+    'c_m04_recepcion',
+    'd_m08_equipos',
+    'd_m09_trazabilidad',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'module',
     'login',
 ]
@@ -98,3 +104,7 @@ LOGIN_REDIRECT_URL = '/'
 # --- CONFIGURACIÓN PARA GUARDAR ARCHIVOS (PDFs) ---
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Configuración de Crispy Forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

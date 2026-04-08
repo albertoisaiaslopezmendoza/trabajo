@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Recepción y Manejo de Muestras{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold m-0" style="color: #2c3e50;">
+            <i class="fas fa-boxes me-2"></i> Recepción y Manejo (ISO 17025: 7.4)
+        </h2>
+    </div>
+
+    <div class="card border-warning mb-5 shadow-sm">
+        <div class="card-header bg-warning text-dark d-flex align-items-center">
+            <h5 class="m-0 fw-bold"><i class="fas fa-clock me-2"></i> Muestras Pendientes de Recibir Física y Formalmente</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle m-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Código de Muestra</th>
+                            <th>Fecha de Toma (Campo)</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in pendientes %}
+                        <tr class="{% if m.alerta_retraso %}table-danger{% endif %}">
+                            <td>
+                                <strong>{{ m.codigo }}</strong>
+                                {% if m.alerta_retraso %}
+                                    <span class="badge bg-danger ms-2" title="¡Cuidado! Más de 24 horas en espera de recepción.">
+                                        <i class="fas fa-exclamation-circle"></i> Retraso Crítico
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>{{ m.fecha_muestreo|date:"d/m/Y H:i" }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'c_m04_registrar_entrada' m.id %}" class="btn btn-sm {% if m.alerta_retraso %}btn-danger{% else %}btn-success{% endif %} shadow-sm">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Recibir Muestra
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">
+                                <i class="fas fa-check-circle fa-2x text-success mb-2 d-block"></i>
+                                No hay muestras pendientes de entrada física.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-primary">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <h5 class="m-0 fw-bold"><i class="fas fa-vial me-2"></i> Inventario Actual en Laboratorio</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle m-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Muestra</th>
+                            <th>Estado Actual</th>
+                            <th>Ubicación Física</th>
+                            <th class="text-center">Integridad</th>
+                            <th>Recibido por</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in en_laboratorio %}
+                        <tr>
+                            <td><strong>{{ r.muestra.codigo }}</strong></td>
+                            <td>
+                                <span class="badge
+                                    {% if r.estado_actual == 'RECIBIDA' %}bg-info
+                                    {% elif r.estado_actual == 'PROCESO' %}bg-primary
+                                    {% elif r.estado_actual == 'RETORNADA' %}bg-warning text-dark
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ r.estado_actual }}
+                                </span>
+                            </td>
+                            <td>{{ r.ubicacion_fisica }}</td>
+                            <td class="text-center">
+                                {% if r.conforme %}
+                                    <i class="fas fa-check-circle text-success fs-5" title="Conforme"></i>
+                                {% else %}
+                                    <i class="fas fa-exclamation-triangle text-danger fs-5" title="No conforme / Desviación"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small class="text-muted d-block">Usuario:</small>
+                                {{ r.usuario_recepcion.get_full_name|default:r.usuario_recepcion.username }}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                No hay muestras registradas en el laboratorio aún.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

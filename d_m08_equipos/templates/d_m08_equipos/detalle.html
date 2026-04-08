@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial del Equipo{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0"><i class="fas fa-clipboard-list me-2"></i> Expediente Técnico: {{ equipo.codigo_interno }}</h3>
+        <a href="{% url 'd_m08_dashboard' %}" class="btn btn-secondary shadow-sm"><i class="fas fa-arrow-left"></i> Volver al Inventario</a>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4 bg-light">
+        <div class="card-body">
+            <h5 class="fw-bold text-primary">{{ equipo.nombre }}</h5>
+            <p class="mb-0">
+                <strong>Marca:</strong> {{ equipo.marca }} | 
+                <strong>Modelo:</strong> {{ equipo.modelo }} | 
+                <strong>S/N:</strong> {{ equipo.serie }}<br>
+                <strong>Ubicación:</strong> {{ equipo.ubicacion }} | 
+                <strong>Estado:</strong> {{ equipo.get_estado_display }}
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-info h-100">
+                <div class="card-header bg-info text-white fw-bold">
+                    <i class="fas fa-balance-scale me-1"></i> Historial de Calibraciones (ISO 17025)
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for cal in calibraciones %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ cal.fecha_calibracion|date:"d/m/Y" }}</strong>
+                                <span class="badge {% if cal.conforme %}bg-success{% else %}bg-danger{% endif %}">
+                                    {% if cal.conforme %}Conforme{% else %}No Conforme{% endif %}
+                                </span>
+                            </div>
+                            <small class="text-muted d-block">Certificado: {{ cal.certificado_numero }}</small>
+                            <small class="text-muted d-block">Vence: {{ cal.proxima_calibracion|date:"d/m/Y" }}</small>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center text-muted py-4">Sin calibraciones registradas.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-warning h-100">
+                <div class="card-header bg-warning text-dark fw-bold">
+                    <i class="fas fa-tools me-1"></i> Historial de Mantenimiento
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for mant in mantenimientos %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ mant.fecha_servicio|date:"d/m/Y" }}</strong>
+                                <span class="badge bg-secondary">{{ mant.get_tipo_display }}</span>
+                            </div>
+                            <small class="d-block mt-1">{{ mant.descripcion }}</small>
+                            <small class="text-muted d-block mt-1">
+                                Por: {{ mant.realizado_por }} | Próx. Servicio: {{ mant.proximo_mantenimiento|date:"d/m/Y" }}
+                            </small>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center text-muted py-4">Sin mantenimientos registrados.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

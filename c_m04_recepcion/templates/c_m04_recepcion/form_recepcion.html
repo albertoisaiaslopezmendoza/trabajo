@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Recepción de Muestra{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-success">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="fas fa-clipboard-check"></i> Recepción de Muestra: {{ muestra.codigo }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info small mb-4">
+                        <strong>Detalles de la toma (Módulo M03):</strong><br>
+                        <em>Descripción:</em> {{ muestra.descripcion }}<br>
+                        <em>Muestreado el:</em> {{ muestra.fecha_muestreo|date:"d/m/Y H:i" }}<br>
+                        <em>Responsable en campo:</em> {{ muestra.responsable_muestreo }}
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <div class="mt-4 text-end">
+                            <a href="{% url 'c_m04_dashboard' %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Registrar Entrada</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

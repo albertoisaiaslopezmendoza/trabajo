@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Expediente MRC{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0"><i class="fas fa-link me-2"></i> Expediente de Trazabilidad: {{ mrc.codigo_interno }}</h3>
+        <a href="{% url 'd_m09_dashboard' %}" class="btn btn-light shadow-sm border"><i class="fas fa-arrow-left"></i> Volver al Catálogo</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 mb-4">
+            <div class="card shadow-sm border-0 h-100 bg-light">
+                <div class="card-body">
+                    <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">{{ mrc.nombre }}</h5>
+                    <ul class="list-unstyled mb-0 lh-lg">
+                        <li><strong>Fabricante:</strong> {{ mrc.marca_fabricante }}</li>
+                        <li><strong>Lote:</strong> {{ mrc.lote }}</li>
+                        <li><strong>Certificado:</strong> {{ mrc.certificado_numero }}</li>
+                        <li><strong>Incertidumbre:</strong> {{ mrc.incertidumbre }}</li>
+                        <li><strong>Caducidad:</strong> {{ mrc.fecha_caducidad|date:"d/m/Y" }}</li>
+                        <li><strong>Ubicación:</strong> {{ mrc.ubicacion }}</li>
+                    </ul>
+                    {% if mrc.archivo_certificado %}
+                        <a href="{{ mrc.archivo_certificado.url }}" target="_blank" class="btn btn-sm btn-info mt-4 w-100 text-white fw-bold shadow-sm"><i class="fas fa-file-pdf"></i> Ver Certificado Adjunto</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 mb-4">
+            <div class="card shadow-sm border-secondary mb-4">
+                <div class="card-header bg-secondary text-white fw-bold"><i class="fas fa-edit me-1"></i> Registrar Uso del Material</div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-secondary mt-3 shadow-sm"><i class="fas fa-check"></i> Registrar en Bitácora</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white fw-bold"><i class="fas fa-history me-1"></i> Bitácora de Trazabilidad</div>
+                <ul class="list-group list-group-flush">
+                    {% for uso in usos %}
+                    <li class="list-group-item py-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <strong>{{ uso.motivo_uso }}</strong>
+                            <span class="badge bg-light text-dark border">{{ uso.fecha_uso|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <small class="d-block mt-2 text-primary fw-bold">Cantidad usada: {{ uso.cantidad_utilizada }} | <span class="text-muted fw-normal">Usuario: {{ uso.usuario_registro.username }}</span></small>
+                        {% if uso.observaciones %}<p class="text-muted small mt-2 mb-0 border-top pt-2"><em>Nota: {{ uso.observaciones }}</em></p>{% endif %}
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-center text-muted py-5"><i class="fas fa-inbox fa-2x mb-3 d-block"></i> No hay historial de uso registrado aún.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
