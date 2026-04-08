@@ -46,7 +46,7 @@
                     <p class="card-text fs-1 fw-bold">{{ proveedores_count }}</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="text-white text-decoration-none stretched-link">
+                    <a href="{% url 'm11_lista_proveedores' %}" class="text-white text-decoration-none stretched-link">
                         Ver aprobados <i class="fas fa-arrow-circle-right ms-1"></i>
                     </a>
                 </div>
@@ -60,7 +60,7 @@
                     <p class="card-text fs-1 fw-bold">{{ servicios_count }}</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="text-dark text-decoration-none stretched-link fw-bold">
+                    <a href="{% url 'm11_lista_servicios' %}" class="text-dark text-decoration-none stretched-link fw-bold">
                         Ver historial <i class="fas fa-arrow-circle-right ms-1"></i>
                     </a>
                 </div>

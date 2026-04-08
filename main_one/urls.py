@@ -23,6 +23,8 @@ urlpatterns = [
     path('aa_m01/', include('aa_m01_revision_contrato.urls')),
     path('a_m07/', include('a_m07_roles_permisos.urls')),
     path('m11/', include('m11_reactivos.urls')),
+    path('m02-clientes/', include('b_m02_clientes.urls')),
+    path('m17-quejas/', include('b_m17_gestion_quejas.urls')),
 ]
 
 # Esto permite servir los archivos PDF subidos/generados durante el desarrollo

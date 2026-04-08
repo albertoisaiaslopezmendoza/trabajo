@@ -1,7 +1,20 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class Proveedor(models.Model):
-    nombre = models.CharField(max_length=200, verbose_name="Nombre del Proveedor")
+# Clase base abstracta para cumplir con los requisitos de LABCOR
+class AuditoriaBase(models.Model):
+    id_registro = models.AutoField(primary_key=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+    usuario_creacion = models.ForeignKey(User, related_name='%(class)s_creados', on_delete=models.SET_NULL, null=True, blank=True)
+    usuario_modificacion = models.ForeignKey(User, related_name='%(class)s_modificados', on_delete=models.SET_NULL, null=True, blank=True)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
+
+class Proveedor(AuditoriaBase):
+    nombre = models.CharField(max_length=200, verbose_name="Nombre del Proveedor", unique=True)
     contacto = models.CharField(max_length=200, blank=True)
     telefono = models.CharField(max_length=50, blank=True)
     email = models.EmailField(blank=True)
@@ -12,7 +25,7 @@ class Proveedor(models.Model):
     def __str__(self):
         return self.nombre
 
-class Reactivo(models.Model):
+class Reactivo(AuditoriaBase):
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField(blank=True, verbose_name="Descripción/Uso")
     ficha_seguridad = models.FileField(upload_to='m11/fichas_seguridad/', blank=True, null=True)
@@ -21,7 +34,7 @@ class Reactivo(models.Model):
     def __str__(self):
         return self.nombre
 
-class LoteReactivo(models.Model):
+class LoteReactivo(AuditoriaBase):
     reactivo = models.ForeignKey(Reactivo, on_delete=models.CASCADE)
     numero_lote = models.CharField(max_length=100, verbose_name="Número de Lote")
     fecha_recepcion = models.DateField()
@@ -33,7 +46,7 @@ class LoteReactivo(models.Model):
     def __str__(self):
         return f"{self.reactivo.nombre} - Lote: {self.numero_lote}"
 
-class AceptacionInsumo(models.Model):
+class AceptacionInsumo(AuditoriaBase):
     lote = models.ForeignKey(LoteReactivo, on_delete=models.CASCADE)
     fecha_evaluacion = models.DateField(auto_now_add=True)
     evaluador = models.CharField(max_length=100)
@@ -43,7 +56,7 @@ class AceptacionInsumo(models.Model):
     def __str__(self):
         return f"Evaluación de: {self.lote}"
 
-class ServicioExterno(models.Model):
+class ServicioExterno(AuditoriaBase):
     descripcion = models.CharField(max_length=200, help_text="Ej. Calibración de balanza")
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     fecha_servicio = models.DateField()

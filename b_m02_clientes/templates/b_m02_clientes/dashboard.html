@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Módulo B-M02: Clientes y Confidencialidad</h2>
+    <hr>
+    
+    <div class="mb-3">
+        <a href="{% url 'b_m02_clientes:nuevo_cliente' %}" class="btn btn-primary">Registrar Nuevo Cliente</a>
+        <a href="{% url 'b_m02_clientes:nuevo_acuerdo' %}" class="btn btn-secondary">Subir Acuerdo de Confidencialidad</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Directorio de Clientes</h4>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Contacto</th>
+                        <th>Email</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in clientes %}
+                    <tr>
+                        <td>{{ c.nombre_empresa }}</td>
+                        <td>{{ c.contacto_principal }}</td>
+                        <td>{{ c.email }}</td>
+                        <td>{% if c.activo %}Activo{% else %}Inactivo{% endif %}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4">No hay clientes registrados.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

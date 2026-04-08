@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'aa_m01_revision_contrato',
     'a_m07_roles_permisos',
     'm11_reactivos',
+    'b_m02_clientes',
+    'b_m17_gestion_quejas',
     'module',
     'login',
 ]

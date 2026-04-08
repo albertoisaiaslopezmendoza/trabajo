@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Investigación y Resolución: {{ queja.folio }}</h2>
+    <p><strong>Cliente:</strong> {{ queja.cliente }}</p>
+    <p><strong>Descripción:</strong> {{ queja.descripcion }}</p>
+    <hr>
+    <div class="card shadow-sm p-4 mt-3">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success mt-3">Guardar Resolución</button>
+            <a href="{% url 'b_m17_gestion_quejas:dashboard' %}" class="btn btn-secondary mt-3">Volver</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

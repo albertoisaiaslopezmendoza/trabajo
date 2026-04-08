@@ -14,7 +14,7 @@
     <div class="card p-4 shadow-lg border-secondary" style="background-color: var(--ui-surface);">
         <form method="post" id="ncForm">
             {% csrf_token %}
-            
+
             <div class="row g-3">
                 {% for field in form %}
                     {% if field.name != 'firma' %}
@@ -39,7 +39,7 @@
             </div>
 
             <hr class="border-secondary mt-5 mb-4">
-            
+
             <div class="text-end">
                 <a href="{% url 'm07_dashboard' %}" class="btn btn-secondary me-2">Cancelar</a>
                 <button type="submit" class="btn btn-primary-custom" onclick="guardarFirma()">

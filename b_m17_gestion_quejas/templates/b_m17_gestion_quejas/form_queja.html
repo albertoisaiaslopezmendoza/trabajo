@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Registrar Nueva Queja</h2>
+    <div class="card shadow-sm p-4 mt-3">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-danger mt-3">Guardar Queja</button>
+            <a href="{% url 'b_m17_gestion_quejas:dashboard' %}" class="btn btn-secondary mt-3">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

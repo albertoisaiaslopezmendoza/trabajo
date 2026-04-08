@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Módulo B-M17: Gestión de Quejas (ISO/IEC 17025:2017)</h2>
+    <hr>
+    
+    <div class="mb-3">
+        <a href="{% url 'b_m17_gestion_quejas:registrar_queja' %}" class="btn btn-danger">Registrar Nueva Queja</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Folio</th>
+                        <th>Cliente</th>
+                        <th>Fecha de Recepción</th>
+                        <th>Estado</th>
+                        <th>Acuse Enviado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in quejas %}
+                    <tr>
+                        <td><strong>{{ q.folio }}</strong></td>
+                        <td>{{ q.cliente }}</td>
+                        <td>{{ q.fecha_recepcion }}</td>
+                        <td>
+                            <span class="badge {% if q.estado == 'CERRADA' %}bg-success{% elif q.estado == 'RESUELTA' %}bg-info{% else %}bg-warning{% endif %}">
+                                {{ q.estado }}
+                            </span>
+                        </td>
+                        <td>{% if q.acuse_recibo_enviado %}Sí{% else %}No{% endif %}</td>
+                        <td>
+                            <a href="{% url 'b_m17_gestion_quejas:investigar_queja' q.id %}" class="btn btn-sm btn-primary">
+                                Análisis y Resolución
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="text-center">No hay quejas registradas.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
