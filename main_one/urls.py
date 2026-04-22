@@ -29,6 +29,13 @@ urlpatterns = [
     path('recepcion/', include('c_m04_recepcion.urls')),
     path('equipos/', include('d_m08_equipos.urls')),
     path('trazabilidad/', include('d_m09_trazabilidad.urls')),
+    path('metodos_sops/', include('e_m05_metodos_sops.urls')),
+    path('metodos/', include('e_m05_metodos_sops.urls')),
+    path('competencia/', include('e_m06_competencia_personal.urls')),
+    path('condiciones/', include('e_m07_condiciones_ambientales.urls')),
+    path('registros_m12/', include('e_m12_ejecucion_registros.urls')),
+    path('incertidumbre/', include('e_m13_calculos_incertidumbre.urls')),
+    path('aseguramiento_qc/', include('e_m14_aseguramiento_validez.urls')),
 ]
 
 # Esto permite servir los archivos PDF subidos/generados durante el desarrollo

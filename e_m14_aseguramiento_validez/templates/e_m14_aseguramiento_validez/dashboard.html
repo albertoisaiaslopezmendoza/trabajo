@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-chart-line"></i> E_m14 Aseguramiento de Validez (QC / PT)</h2>
+        <a href="{% url 'e_m14_crear' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Registro QC</a>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-sm border-dark">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Folio QC</th>
+                        <th>Método</th>
+                        <th>Tipo de Control</th>
+                        <th>Fecha</th>
+                        <th>Resultado (Validez)</th>
+                        <th>Estado BD</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for qc in controles %}
+                    <tr>
+                        <td><strong>{{ qc.folio_qc }}</strong></td>
+                        <td>{{ qc.metodo.codigo }}</td>
+                        <td>{{ qc.get_tipo_control_display }}</td>
+                        <td>{{ qc.fecha_ejecucion|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if qc.es_conforme %}
+                                <span class="text-success fw-bold"><i class="fas fa-check-circle"></i> Conforme</span>
+                            {% else %}
+                                <span class="text-danger fw-bold"><i class="fas fa-times-circle"></i> No Conforme</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if qc.estado == 'FINALIZADO' %}
+                                <span class="badge bg-danger"><i class="fas fa-lock"></i> Finalizado</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark"><i class="fas fa-edit"></i> Borrador</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'e_m14_editar' qc.id %}" class="btn btn-sm btn-outline-secondary">
+                                {% if qc.estado == 'EN_PROCESO' %} Editar {% else %} Consultar {% endif %}
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="text-center py-3 text-muted">No hay registros de Control de Calidad.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

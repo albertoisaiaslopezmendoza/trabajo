@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-user-check"></i> Competencia y Autorización de Personal</h2>
+        <a href="{% url 'e_m06_autorizar' %}" class="btn btn-primary">Registrar Autorización Técnica</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">Matriz de Autorización (Ensayos Vigentes)</div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Analista</th>
+                                <th>Método</th>
+                                <th>Autorizado el</th>
+                                <th>Certificado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aut in autorizaciones %}
+                            <tr>
+                                <td>{{ aut.personal.get_full_name|default:aut.personal.username }}</td>
+                                <td><span class="badge bg-secondary">{{ aut.metodo.codigo }}</span></td>
+                                <td>{{ aut.fecha_autorizacion }}</td>
+                                <td>
+                                    <a href="{% url 'e_m06_certificado_pdf' aut.personal.id %}" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center">Sin autorizaciones.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">Últimas Capacitaciones</div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for cap in capacitaciones %}
+                        <li class="list-group-item">
+                            <small class="text-muted">{{ cap.fecha_fin }}</small><br>
+                            <strong>{{ cap.titulo }}</strong><br>
+                            <span class="badge bg-light text-dark">{{ cap.empleado.get_full_name|default:cap.empleado.username }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm mx-auto border-0" style="max-width: 900px;">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="fas fa-vial"></i> 
+                {% if registro %} RT: {{ registro.folio_registro }} {% else %} Nuevo Registro Técnico {% endif %}
+            </h4>
+            {% if es_lectura %}
+                <span class="badge bg-danger fs-6"><i class="fas fa-lock"></i> BLOQUEO DE INMUTABILIDAD</span>
+            {% endif %}
+        </div>
+        <div class="card-body bg-light">
+            {% if es_lectura %}
+                <div class="alert alert-danger shadow-sm">
+                    <strong><i class="fas fa-shield-alt"></i> Documento de Solo Lectura:</strong> Este registro ha sido marcado como FINALIZADO. Cumpliendo con la Cláusula 7.5 de ISO 17025, los datos crudos originales no pueden ser modificados.
+                </div>
+            {% else %}
+                <div class="alert alert-info shadow-sm">
+                    <strong>Atención Analista:</strong> Asegúrese de capturar los datos originales de forma simultánea a la ejecución del ensayo. Al cambiar el estado a "Finalizado", el sistema bloqueará la edición permanentemente.
+                </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset {% if es_lectura %}disabled{% endif %} class="bg-white p-3 border rounded">
+                    <div class="row">
+                        {% for field in form %}
+                            <div class="col-md-{% if field.name in 'datos_crudos,calculos_resultados' %}12{% else %}6{% endif %} mb-3">
+                                <label class="form-label text-secondary fw-bold">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{% url 'e_m12_dashboard' %}" class="btn btn-secondary me-3">{% if es_lectura %}Regresar al Listado{% else %}Cancelar y Salir{% endif %}</a>
+                    {% if not es_lectura %}
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar y Aplicar Trazabilidad</button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
