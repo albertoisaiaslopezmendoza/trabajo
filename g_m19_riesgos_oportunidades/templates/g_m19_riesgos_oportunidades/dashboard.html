@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Módulo 19: Riesgos y Oportunidades</h2>
+    <p class="text-muted">Cumplimiento ISO/IEC 17025:2017 Cláusula 8.5</p>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'm19_nuevo' %}" class="btn btn-primary mb-3">Identificar Nuevo Riesgo/Oportunidad</a>
+    
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Origen</th>
+                <th>Criticidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ro in ros %}
+            <tr>
+                <td><strong>{{ ro.codigo_ro }}</strong></td>
+                <td>
+                    {% if ro.tipo == 'RIESGO' %}<span class="badge bg-warning text-dark">Riesgo</span>
+                    {% else %}<span class="badge bg-success">Oportunidad</span>{% endif %}
+                </td>
+                <td>{{ ro.get_origen_display }}</td>
+                <td>
+                    {% if ro.nivel_criticidad > 4 %}<span class="badge bg-danger">Alto ({{ ro.nivel_criticidad }})</span>
+                    {% elif ro.nivel_criticidad > 2 %}<span class="badge bg-warning text-dark">Medio ({{ ro.nivel_criticidad }})</span>
+                    {% else %}<span class="badge bg-info text-dark">Bajo ({{ ro.nivel_criticidad }})</span>{% endif %}
+                </td>
+                <td><span class="badge bg-secondary">{{ ro.get_estado_display }}</span></td>
+                <td>
+                    <a href="{% url 'm19_editar' ro.pk %}" class="btn btn-sm btn-primary">
+                        {% if ro.estado == 'CERRADO' %}Ver Detalle{% else %}Gestionar{% endif %}
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center">No hay Riesgos ni Oportunidades registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

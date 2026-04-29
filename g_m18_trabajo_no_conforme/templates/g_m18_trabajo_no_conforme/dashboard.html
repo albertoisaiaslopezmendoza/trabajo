@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Módulo 18: Control de Trabajo No Conforme (TNC)</h2>
+    <p class="text-muted">Cumplimiento ISO/IEC 17025:2017 Cláusula 7.10</p>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'm18_nuevo' %}" class="btn btn-primary mb-3">Registrar Nuevo TNC</a>
+    
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Código TNC</th>
+                <th>Fecha Identificación</th>
+                <th>Impacto</th>
+                <th>¿Generó Acción Correctiva?</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tnc in tncs %}
+            <tr>
+                <td><strong>{{ tnc.codigo_tnc }}</strong></td>
+                <td>{{ tnc.fecha_identificacion|date:"d/m/Y" }}</td>
+                <td>
+                    {% if tnc.impacto == 'ALTO' %}<span class="badge bg-danger">Alto</span>
+                    {% elif tnc.impacto == 'MEDIO' %}<span class="badge bg-warning text-dark">Medio</span>
+                    {% else %}<span class="badge bg-success">Bajo</span>{% endif %}
+                </td>
+                <td>
+                    {% if tnc.requiere_accion_correctiva %}<span class="badge bg-danger">SÍ</span>
+                    {% else %}<span class="badge bg-secondary">NO</span>{% endif %}
+                </td>
+                <td><span class="badge bg-info text-dark">{{ tnc.get_estado_display }}</span></td>
+                <td>
+                    <a href="{% url 'm18_editar' tnc.pk %}" class="btn btn-sm btn-primary">
+                        {% if tnc.estado == 'CERRADO' %}Ver / Auditar{% else %}Evaluar{% endif %}
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center">No hay registros de Trabajo No Conforme.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

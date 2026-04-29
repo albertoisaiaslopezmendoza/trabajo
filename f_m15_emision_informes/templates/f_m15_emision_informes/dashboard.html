@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Módulo 15: Emisión de Informes y Certificados</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'm15_nuevo' %}" class="btn btn-primary mb-3">Nuevo Informe</a>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Creado por</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inf in informes %}
+            <tr>
+                <td>
+                    {{ inf.codigo_informe }}
+                    {% if inf.es_enmienda %}<br><small class="text-danger">(Enmienda)</small>{% endif %}
+                </td>
+                <td>{{ inf.get_tipo_display }}</td>
+                <td><span class="badge bg-secondary">{{ inf.get_estado_display }}</span></td>
+                <td>{{ inf.creado_por.username }}</td>
+                <td>
+                    <a href="{% url 'm15_descargar_pdf' inf.pk %}" class="btn btn-sm btn-info">PDF</a>
+
+                    {% if inf.estado == 'BORRADOR' or inf.estado == 'REVISION' %}
+                        <a href="{% url 'm15_editar' inf.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                    {% elif inf.estado == 'EMITIDO' %}
+                        <a href="{% url 'm15_enmienda' inf.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que desea generar una enmienda de este informe emitido?');">Crear Enmienda</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center">No hay informes registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

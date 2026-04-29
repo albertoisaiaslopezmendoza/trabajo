@@ -36,6 +36,10 @@ urlpatterns = [
     path('registros_m12/', include('e_m12_ejecucion_registros.urls')),
     path('incertidumbre/', include('e_m13_calculos_incertidumbre.urls')),
     path('aseguramiento_qc/', include('e_m14_aseguramiento_validez.urls')),
+    path('informes/', include('f_m15_emision_informes.urls')),
+    path('trabajo-no-conforme/', include('g_m18_trabajo_no_conforme.urls')),
+    path('riesgos-oportunidades/', include('g_m19_riesgos_oportunidades.urls')),
+    path('acciones-correctivas/', include('g_m20_acciones_correctivas.urls')),
 ]
 
 # Esto permite servir los archivos PDF subidos/generados durante el desarrollo
