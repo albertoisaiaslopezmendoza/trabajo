@@ -2,13 +2,25 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class DeclaracionImparcialidad(models.Model):
     """Modelo para guardar las declaraciones firmadas por el personal."""
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Personal")
+
+    # Agregamos related_name='declaraciones_m25' para evitar el choque con m00_imparcialidad
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='declaraciones_m25',
+        verbose_name="Personal"
+    )
     fecha_declaracion = models.DateField("Fecha de Declaración", auto_now_add=True)
     acepta_politicas = models.BooleanField("Acepto la Política de Imparcialidad", default=False)
     notas = models.TextField("Notas Adicionales", blank=True)
 
+    def __str__(self):
+        return f"Declaración de {self.usuario.username} - {self.fecha_declaracion}"
+
+    # ... (Tus otros modelos, ConflictoInteres y Mitigacion, se quedan exactamente igual) ...
     def __str__(self):
         return f"Declaración de {self.usuario.username} - {self.fecha_declaracion}"
 

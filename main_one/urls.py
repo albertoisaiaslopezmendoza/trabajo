@@ -45,6 +45,7 @@ urlpatterns = [
     path('auditorias/', include('h_m23_auditorias_internas.urls')),
     path('revision-direccion/', include('h_m24_revision_direccion.urls')),
     path('imparcialidad/', include('h_m25_imparcialidad.urls')),
+    path('m16-audit/', include('i_m16_control_datos_audit_trail.urls')),
 ]
 
 # Esto permite servir los archivos PDF subidos/generados durante el desarrollo

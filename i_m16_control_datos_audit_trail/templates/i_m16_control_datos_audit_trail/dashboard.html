@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ titulo_modulo }}</h2>
+    <p class="text-muted">Registro de trazabilidad y eventos del sistema (ISO/IEC 17025).</p>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Fecha y Hora</th>
+                            <th>Usuario</th>
+                            <th>Acción</th>
+                            <th>Módulo</th>
+                            <th>Detalles</th>
+                            <th>Dirección IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <!-- Usamos created_at, username, action, module, details e ip_address -->
+                            <td>{{ log.created_at|date:"Y-m-d H:i" }}</td>
+                            <td>{{ log.username|default:"Sistema" }}</td>
+                            <td><span class="badge bg-primary">{{ log.action }}</span></td>
+                            <td>{{ log.module|default:"-" }}</td>
+                            <td>{{ log.details|default:"-" }}</td>
+                            <td>{{ log.ip_address|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No hay registros de auditoría disponibles.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

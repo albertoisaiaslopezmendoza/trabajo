@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'h_m23_auditorias_internas',
     'h_m24_revision_direccion',
     'h_m25_imparcialidad',
+    'i_m16_control_datos_audit_trail',
     'crispy_forms',
     'crispy_bootstrap5',
     'module',
