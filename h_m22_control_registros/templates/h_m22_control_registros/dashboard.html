@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Módulo 22: Control de Registros</h2>
+    <p class="text-muted">Cumplimiento ISO/IEC 17025:2017 Cláusula 8.4 (Control de Registros Técnicos y de Calidad)</p>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'm22_nuevo' %}" class="btn btn-primary mb-3">Declarar Nuevo Registro</a>
+    
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Nombre del Registro</th>
+                <th>Medio / Ubicación</th>
+                <th>Retención</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reg in registros %}
+            <tr class="{% if reg.estado == 'DESTRUIDO' %}table-active text-muted{% endif %}">
+                <td><strong>{{ reg.codigo_registro }}</strong></td>
+                <td>{{ reg.titulo }}<br><small class="text-secondary">{{ reg.get_tipo_display }}</small></td>
+                <td>{{ reg.get_medio_almacenamiento_display }}<br><small>({{ reg.ubicacion_almacenamiento }})</small></td>
+                <td>{{ reg.tiempo_retencion_anios }} años</td>
+                <td>
+                    {% if reg.estado == 'ACTIVO' %}<span class="badge bg-success">Activo</span>
+                    {% elif reg.estado == 'ARCHIVADO' %}<span class="badge bg-warning text-dark">Archivado</span>
+                    {% else %}<span class="badge bg-danger">Destruido</span>{% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'm22_editar' reg.pk %}" class="btn btn-sm btn-primary">
+                        {% if reg.estado == 'DESTRUIDO' %}Ver Trazabilidad{% else %}Gestionar Retención{% endif %}
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center">No hay configuración de registros declarados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

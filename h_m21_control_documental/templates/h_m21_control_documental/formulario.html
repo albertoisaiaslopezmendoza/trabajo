@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <h2>{{ accion }} - Documento SGC</h2>
+    <div class="card shadow-sm mt-3">
+        <div class="card-header bg-dark text-white">
+            Información del Documento
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    {% for field in form %}
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Guardar SGC</button>
+                    <a href="{% url 'm21_dashboard' %}" class="btn btn-secondary">Cancelar / Regresar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

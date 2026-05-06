@@ -1,0 +1,73 @@
+<!-- h_m24_revision_direccion/templates/h_m24_revision_direccion/dashboard.html -->
+{% extends 'base.html' %} <!-- Hereda del diseño general de tu app -->
+
+{% block content %}
+<div class="container mt-4">
+    <h2>M24 - Revisión por la Dirección y KPIs (ISO 17025)</h2>
+
+    <!-- Tablero de KPIs -->
+    <div class="row mb-4">
+        {% for kpi in kpis %}
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ kpi.nombre }}</h5>
+                    <h3 class="text-primary">{{ kpi.valor_actual }} / {{ kpi.meta }}</h3>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Formularios de Captura -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark text-white">Registrar Nueva Revisión</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form_rev.as_p }}
+                        <button type="submit" name="btn_revision" class="btn btn-success">Guardar Revisión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">Asignar Acuerdo / Recurso</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form_acuerdo.as_p }}
+                        <button type="submit" name="btn_acuerdo" class="btn btn-primary">Guardar Acuerdo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Revisiones y Acuerdos -->
+    <h4>Historial de Revisiones</h4>
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Código</th>
+                <th>Fecha</th>
+                <th>Resumen</th>
+                <th>Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rev in revisiones %}
+            <tr>
+                <td>{{ rev.codigo_mr }}</td>
+                <td>{{ rev.fecha_revision }}</td>
+                <td>{{ rev.resumen }}</td>
+                <td>{{ rev.get_estatus_display }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

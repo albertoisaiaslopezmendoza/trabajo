@@ -1,0 +1,106 @@
+<!-- h_m25_imparcialidad/templates/h_m25_imparcialidad/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">M25 - Imparcialidad y Confidencialidad (ISO 17025 Cláusula 4.1)</h2>
+
+    <div class="row">
+        <!-- Columna Izquierda: Formularios -->
+        <div class="col-md-5">
+            <!-- Formulario Declaración -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">Nueva Declaración</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form_dec.as_p }}
+                        <button type="submit" name="btn_declaracion" class="btn btn-primary w-100">Firmar Declaración</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Formulario Conflicto -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-warning text-dark">Reportar Riesgo / Conflicto</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form_conf.as_p }}
+                        <button type="submit" name="btn_conflicto" class="btn btn-warning w-100">Registrar Riesgo</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Formulario Mitigación -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-success text-white">Medida de Mitigación</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form_mit.as_p }}
+                        <button type="submit" name="btn_mitigacion" class="btn btn-success w-100">Aplicar Medida</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Tablas de Datos -->
+        <div class="col-md-7">
+            <!-- Tabla Riesgos -->
+            <h4 class="mt-2">Riesgos y Conflictos Reportados</h4>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nivel</th>
+                            <th>Descripción</th>
+                            <th>Estatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for conf in conflictos %}
+                        <tr>
+                            <td>{{ conf.id }}</td>
+                            <td>{{ conf.get_nivel_riesgo_display }}</td>
+                            <td>{{ conf.descripcion }}</td>
+                            <td>{{ conf.get_estatus_display }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="text-center">No hay riesgos registrados.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tabla Mitigaciones -->
+            <h4>Historial de Mitigaciones</h4>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Conflicto ID</th>
+                            <th>Medida Aplicada</th>
+                            <th>Fecha</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mit in mitigaciones %}
+                        <tr>
+                            <td>{{ mit.conflicto.id }}</td>
+                            <td>{{ mit.descripcion_medida }}</td>
+                            <td>{{ mit.fecha_implementacion }}</td>
+                            <td>{{ mit.responsable.username }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="text-center">No hay mitigaciones registradas.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

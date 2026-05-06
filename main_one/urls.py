@@ -40,6 +40,11 @@ urlpatterns = [
     path('trabajo-no-conforme/', include('g_m18_trabajo_no_conforme.urls')),
     path('riesgos-oportunidades/', include('g_m19_riesgos_oportunidades.urls')),
     path('acciones-correctivas/', include('g_m20_acciones_correctivas.urls')),
+    path('control-documental/', include('h_m21_control_documental.urls')),
+    path('control-registros/', include('h_m22_control_registros.urls')),
+    path('auditorias/', include('h_m23_auditorias_internas.urls')),
+    path('revision-direccion/', include('h_m24_revision_direccion.urls')),
+    path('imparcialidad/', include('h_m25_imparcialidad.urls')),
 ]
 
 # Esto permite servir los archivos PDF subidos/generados durante el desarrollo

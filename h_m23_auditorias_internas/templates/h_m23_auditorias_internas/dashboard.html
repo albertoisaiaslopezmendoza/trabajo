@@ -1,0 +1,61 @@
+<!-- h_m23_auditorias_internas/templates/h_m23_auditorias_internas/dashboard.html -->
+{% extends 'base.html' %} <!-- Asumiendo que tienes un base.html principal -->
+
+{% block content %}
+<div class="container mt-4">
+    <h2>M23 - Auditorías Internas (ISO 17025)</h2>
+
+    <div class="row">
+        <!-- Formulario de Auditorías -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Programar Auditoría</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ audit_form.as_p }}
+                        <button type="submit" name="btn_audit" class="btn btn-primary mt-2">Guardar Auditoría</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de Hallazgos -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Registrar Hallazgo</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ finding_form.as_p }}
+                        <button type="submit" name="btn_finding" class="btn btn-danger mt-2">Guardar Hallazgo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Auditorías -->
+    <h3>Lista de Auditorías</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Fecha Planeada</th>
+                <th>Auditor Líder</th>
+                <th>Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for audit in auditorias %}
+            <tr>
+                <td>{{ audit.audit_code }}</td>
+                <td>{{ audit.planned_date }}</td>
+                <td>{{ audit.lead_auditor }}</td>
+                <td>{{ audit.get_status_display }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
